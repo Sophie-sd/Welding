@@ -1,0 +1,88 @@
+{% load static %}
+<header class="site-header" id="site-header">
+  <div class="site-header__bar">
+    <div class="container site-header__inner">
+      <a href="{% url 'home' %}" class="site-header__logo" aria-label="{{ site.SITE_NAME }} home">
+        <img
+          class="site-header__logo-img"
+          src="{% static 'images/logo-khodak.png' %}"
+          alt="{{ site.SITE_NAME }}"
+          width="320"
+          height="69"
+          decoding="async"
+        >
+      </a>
+
+      <nav class="site-header__nav" aria-label="Main navigation">
+        <ul class="site-header__nav-list">
+          <li><a href="{% url 'services' %}" class="site-header__nav-link{% if '/services' in current_path %} site-header__nav-link--active{% endif %}">Services</a></li>
+          <li><a href="{% url 'portfolio' %}" class="site-header__nav-link{% if current_path == '/portfolio/' %} site-header__nav-link--active{% endif %}">Portfolio</a></li>
+          <li><a href="{% url 'about' %}" class="site-header__nav-link{% if current_path == '/about/' %} site-header__nav-link--active{% endif %}">About</a></li>
+          <li><a href="{% url 'blog' %}" class="site-header__nav-link{% if '/blog' in current_path %} site-header__nav-link--active{% endif %}">Blog</a></li>
+          <li><a href="{% url 'contact' %}" class="site-header__nav-link{% if current_path == '/contact/' %} site-header__nav-link--active{% endif %}">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-header__actions">
+        <a href="{% url 'contact' %}" class="btn {% if current_path == '/' %}btn--header-quote{% else %}btn--secondary{% endif %} site-header__cta" data-quote-open>
+          Request a Quote
+          {% if current_path == '/' %}
+          <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          {% endif %}
+        </a>
+        <button class="site-header__burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav" data-menu-toggle>
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="site-header__backdrop" data-menu-backdrop hidden aria-hidden="true"></div>
+
+<nav id="mobile-nav" class="site-header__mobile-nav" aria-label="Mobile navigation" data-mobile-nav>
+  <div class="site-header__mobile-body">
+    <ul class="site-header__mobile-list">
+      <li><a href="{% url 'services' %}" class="site-header__mobile-link">Services</a></li>
+      <li><a href="{% url 'portfolio' %}" class="site-header__mobile-link">Portfolio</a></li>
+      <li><a href="{% url 'about' %}" class="site-header__mobile-link">About</a></li>
+      <li><a href="{% url 'blog' %}" class="site-header__mobile-link">Blog</a></li>
+      <li><a href="{% url 'contact' %}" class="site-header__mobile-link">Contact</a></li>
+    </ul>
+
+    <ul class="site-header__mobile-secondary">
+      <li><a href="{% url 'faq' %}" class="site-header__mobile-secondary-link">FAQ</a></li>
+      <li><a href="{% url 'privacy' %}" class="site-header__mobile-secondary-link">Privacy Policy</a></li>
+      <li><a href="{% url 'terms' %}" class="site-header__mobile-secondary-link">Terms of Service</a></li>
+    </ul>
+  </div>
+
+  <div class="site-header__mobile-meta">
+    <p class="site-header__mobile-meta-label">Call us</p>
+    <a href="tel:{{ site.SITE_PHONE|cut:' ' }}" class="site-header__mobile-phone">{{ site.SITE_PHONE }}</a>
+  </div>
+</nav>
+
+<nav class="site-header__mobile-dock" aria-label="Quick links" data-mobile-dock>
+  <a href="{% url 'services' %}" class="site-header__mobile-dock-item">
+    <svg class="site-header__mobile-dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+    </svg>
+    <span class="site-header__mobile-dock-label">Services</span>
+  </a>
+  <a href="{% url 'contact' %}" class="site-header__mobile-dock-item">
+    <svg class="site-header__mobile-dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span class="site-header__mobile-dock-label">Contact</span>
+  </a>
+  <a href="{% url 'contact' %}" class="site-header__mobile-dock-item site-header__mobile-dock-item--accent" data-quote-open>
+    <svg class="site-header__mobile-dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+    </svg>
+    <span class="site-header__mobile-dock-label">Request a Quote</span>
+  </a>
+</nav>

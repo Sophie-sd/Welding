@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="thank-you">
+  <div class="container reveal">
+    {% url 'home' as back_url %}
+    {% include 'partials/back_link.html' with back_label='Back to Home' %}
+    <h1 class="heading-lg thank-you__title">Thank You</h1>
+    <p class="thank-you__text">Your enquiry has been received. We will contact you within 30 minutes during business hours.</p>
+  </div>
+</section>
+{% endblock %}

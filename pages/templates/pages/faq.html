@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'partials/page_hero.html' with eyebrow='Support' title='Frequently Asked Questions.' lead='Answers to common questions about our welding services, certifications, and project process.' image='images/tig-weld.png' image_alt='Precision TIG welding — KHODAK Metal Solution FAQ' %}
+
+<section class="section section--alt">
+  <div class="container">
+    {% url 'home' as back_url %}
+    {% include 'partials/back_link.html' with back_label='Back to Home' %}
+
+    <div class="faq-list reveal" data-faq-accordion>
+      {% for item in site.FAQ_ITEMS %}
+      <div class="faq-item{% if forloop.first %} is-open{% endif %}">
+        <button type="button" class="faq-item__trigger" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+          <span>{{ item.question }}</span>
+          <span class="faq-item__icon" aria-hidden="true">{% if forloop.first %}−{% else %}+{% endif %}</span>
+        </button>
+        <div class="faq-item__panel"{% if forloop.first %} style="display: block"{% endif %}>
+          <p>{{ item.answer }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block schema %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for item in site.FAQ_ITEMS %}
+    {
+      "@type": "Question",
+      "name": "{{ item.question }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ item.answer }}"
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}

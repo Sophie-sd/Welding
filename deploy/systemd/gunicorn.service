@@ -1,0 +1,15 @@
+[Unit]
+Description=Gunicorn daemon for KHODAK Metal Solution
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/weldingproject
+EnvironmentFile=/etc/weldingproject/.env
+ExecStart=/var/www/weldingproject/.venv/bin/gunicorn config.wsgi:application -c gunicorn.conf.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

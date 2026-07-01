@@ -1,0 +1,121 @@
+.value-grid {
+  background: var(--color-bg-alt);
+}
+
+.value-grid__header {
+  margin-bottom: var(--space-12);
+}
+
+.value-grid__title {
+  display: inline-block;
+  border-bottom: 3px solid var(--color-accent);
+  padding-bottom: var(--space-3);
+}
+
+.value-grid__cards {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.value-card {
+  padding: var(--space-8);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: relative;
+  overflow: hidden;
+  transition: transform 300ms var(--ease-spring), box-shadow 300ms ease,
+    border-color 250ms ease;
+}
+
+.value-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 300ms var(--ease-out);
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.09);
+  border-color: transparent;
+}
+
+.value-card:hover::before {
+  transform: scaleY(1);
+}
+
+.value-card--featured {
+  border-top: 3px solid var(--color-accent);
+}
+
+.value-card--featured::before {
+  display: none;
+}
+
+.value-card__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--color-accent);
+}
+
+.value-card__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.value-card__num {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.value-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.value-card--featured {
+  grid-row: span 1;
+}
+
+@media (min-width: 768px) {
+  .value-grid__cards {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto auto;
+  }
+
+  .value-card--featured {
+    grid-row: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .value-grid__cards {
+    grid-template-columns: 1.2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .value-card--featured {
+    grid-row: span 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .value-card:hover {
+    transform: none;
+  }
+}

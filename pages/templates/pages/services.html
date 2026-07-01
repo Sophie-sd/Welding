@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'partials/page_hero.html' with eyebrow='Core Competencies' title='Precision Engineering. Heavy-Duty Execution.' lead='From blueprint analysis to on-site installation, we deliver end-to-end metal fabrication services engineered for structural integrity and long-term performance.' image='images/tig-weld.png' image_alt='High-quality TIG weld on curved metal pipe — KHODAK welding services' preload=True %}
+
+<section class="section section--alt">
+  <div class="container">
+    <header class="service-catalog__header reveal">
+      <h2 class="heading-lg section-title">Service Catalog</h2>
+      <p class="prose">We execute blueprints with measurable precision — every service documented, every deliverable inspected.</p>
+    </header>
+    <div class="service-grid">
+      {% for service in site.SERVICES %}
+      <article class="service-card reveal">
+        <h3 class="service-card__title">{{ service.title }}</h3>
+        <p class="service-card__text">{{ service.short }}</p>
+        {% if service.slug == 'tig-welding' %}
+        <div class="service-card__materials">
+          <span>TIG: Stainless, Alum</span>
+          <span>Electrode: Carbon Steel</span>
+        </div>
+        {% endif %}
+        <a href="{% url 'service_detail' service.slug %}" class="service-card__link">Explore Specs →</a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <header class="timeline-section__header reveal">
+      <h2 class="heading-lg">How We Work</h2>
+    </header>
+    <div class="timeline">
+      <div class="timeline__step reveal">
+        <div class="timeline__content">
+          <h3>Blueprint Analysis</h3>
+          <p class="prose">Engineering team reviews CAD/PDF specifications, identifies material requirements, and confirms weld procedures before fabrication begins.</p>
+        </div>
+        <div class="timeline__marker" aria-hidden="true">01</div>
+        <div class="timeline__visual">
+          <div class="timeline__file">FILE: CAD/PDF<br>STATUS: UNDER REVIEW<br>TOLERANCE: ±0.5mm</div>
+        </div>
+      </div>
+      <div class="timeline__step reveal">
+        <div class="timeline__visual">
+          <img src="{% static 'images/workshop.png' %}" alt="Metal fabrication workshop — KHODAK production facility" width="800" height="500" loading="lazy">
+        </div>
+        <div class="timeline__marker" aria-hidden="true">02</div>
+        <div class="timeline__content">
+          <h3>Fabrication Phase</h3>
+          <p class="prose">CNC cutting, forming, and coded welding in our controlled workshop environment with full quality inspection at each stage.</p>
+        </div>
+      </div>
+      <div class="timeline__step reveal">
+        <div class="timeline__content">
+          <h3>On-Site Execution</h3>
+          <p class="prose">Certified installation crews mobilise with lifting equipment and site-specific safety protocols for structural erection and final commissioning.</p>
+        </div>
+        <div class="timeline__marker" aria-hidden="true">03</div>
+        <div class="timeline__visual">
+          <img src="{% static 'images/project-frame.png' %}" alt="On-site metal structure installation — industrial project UK" width="800" height="500" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include 'partials/spec_form_section.html' with form_id_prefix='spec-services' bg_image='images/workshop.png' %}
+{% endblock %}

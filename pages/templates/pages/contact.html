@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static quote_form_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="contact-page">
+  <div class="container contact-page__container">
+    <header class="contact-page__intro reveal">
+      <p class="eyebrow eyebrow--bar">Get in Touch</p>
+      <h1 class="heading-display contact-page__title">Contact Our Workshop.</h1>
+      <p class="prose contact-page__lead">Submit project specifications or reach our Poole workshop. We respond within one business day.</p>
+    </header>
+
+    <div class="contact-page__grid">
+      <figure class="contact-glass contact-glass--media reveal">
+        <img src="{% static 'images/hero-contact.png' %}" alt="Project specification review at KHODAK Metal Solution — contact our workshop" width="800" height="600" loading="lazy">
+        <figcaption class="contact-glass__note">Certified teams · AWS D1.1 · ISO 9001</figcaption>
+      </figure>
+
+      <aside class="contact-glass contact-glass--info reveal" style="--reveal-delay: 80ms">
+        <h2 class="contact-glass__heading">Workshop Details</h2>
+        <dl class="contact-info">
+          <div class="contact-info__item">
+            <dt class="contact-info__label">Phone</dt>
+            <dd class="contact-info__value"><a href="tel:{{ site.SITE_PHONE|cut:' ' }}">{{ site.SITE_PHONE }}</a></dd>
+          </div>
+          <div class="contact-info__item">
+            <dt class="contact-info__label">Email</dt>
+            <dd class="contact-info__value"><a href="mailto:{{ site.SITE_EMAIL }}">{{ site.SITE_EMAIL }}</a></dd>
+          </div>
+          <div class="contact-info__item">
+            <dt class="contact-info__label">Workshop</dt>
+            <dd class="contact-info__value">{{ site.SITE_ADDRESS }}</dd>
+          </div>
+          <div class="contact-info__item">
+            <dt class="contact-info__label">Hours</dt>
+            <dd class="contact-info__value">Mon–Fri 07:00–17:00</dd>
+          </div>
+        </dl>
+      </aside>
+
+      <div class="contact-glass contact-glass--form reveal" style="--reveal-delay: 160ms">
+        <h2 class="contact-glass__heading">Project Enquiry</h2>
+        {% quote_form compact=True id_prefix='contact' %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block schema %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.SITE_URL }}/"},
+    {"@type": "ListItem", "position": 2, "name": "Contact"}
+  ]
+}
+</script>
+{% endblock %}

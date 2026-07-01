@@ -1,0 +1,27 @@
+{% load static quote_form_tags %}
+<section class="spec-form-section">
+  <div class="spec-form-block reveal">
+    <div class="spec-form-block__media" aria-hidden="true">
+      {% if bg_image %}
+      <img src="{% static bg_image %}" alt="" width="800" height="600" loading="lazy">
+      {% else %}
+      <img src="{% static 'images/hero-contact.png' %}" alt="" width="800" height="600" loading="lazy">
+      {% endif %}
+    </div>
+    <div class="spec-form-block__overlay" aria-hidden="true"></div>
+    <div class="container spec-form spec-form-block__content">
+      <div class="spec-form__intro reveal">
+        <h2 class="heading-lg spec-form__title section-title">Submit Specifications</h2>
+        <p class="prose">Transmit your project details for engineering review. Our team responds within one business day with a scope assessment and quote.</p>
+        <div class="spec-form__checks">
+          <div class="spec-form__check">ISO 9001 Quality Management</div>
+          <div class="spec-form__check">AWS D1.1 Structural Welding</div>
+          <div class="spec-form__check">Coded Welder Qualifications</div>
+        </div>
+      </div>
+      <div class="spec-form__form reveal">
+        {% quote_form compact=True id_prefix=form_id_prefix|default:"spec" %}
+      </div>
+    </div>
+  </div>
+</section>

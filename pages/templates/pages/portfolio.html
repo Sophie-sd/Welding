@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static pages_media %}
+
+{% block content %}
+{% include 'partials/page_hero.html' with eyebrow='Portfolio' title='Our Work.' lead='A showcase of structural integrity and precision engineering. From heavy industrial frameworks to meticulous residential repairs, explore the projects built to last.' image='images/project-frame.png' image_alt='Steel framework assembly — KHODAK Metal Solution portfolio project' preload=True %}
+
+<section class="section section--alt">
+  <div class="container">
+    <div class="portfolio-filters reveal" role="group" aria-label="Filter projects" data-portfolio-filters>
+      <button type="button" class="filter-btn filter-btn--active" data-filter="all">All</button>
+      <button type="button" class="filter-btn" data-filter="industrial">Industrial</button>
+      <button type="button" class="filter-btn" data-filter="commercial">Commercial</button>
+      <button type="button" class="filter-btn" data-filter="residential">Residential</button>
+      <button type="button" class="filter-btn" data-filter="repairs">Repairs</button>
+    </div>
+
+    <div class="portfolio-grid" data-portfolio-grid>
+      {% for item in site.PORTFOLIO_ITEMS %}
+      <article class="portfolio-card reveal" data-category="{{ item.category }}">
+        <div class="portfolio-card__image">
+          <img src="{% content_image item %}" alt="{{ item.title }} — {{ item.location }} metal fabrication project" width="800" height="500" loading="lazy">
+          <span class="portfolio-card__badge">{{ item.category }}</span>
+        </div>
+        <div class="portfolio-card__body">
+          <h3 class="portfolio-card__title">{{ item.title }}</h3>
+          <p class="portfolio-card__meta">
+            <span>{{ item.location }}</span>
+            <span aria-hidden="true">·</span>
+            <span>{{ item.detail }}</span>
+          </p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

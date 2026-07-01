@@ -1,0 +1,50 @@
+{% load static %}
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <a href="{% url 'home' %}" class="site-footer__logo" aria-label="{{ site.SITE_NAME }} home">
+        <img
+          class="site-footer__logo-img"
+          src="{% static 'images/logo-khodak.png' %}"
+          alt="{{ site.SITE_NAME }}"
+          width="540"
+          height="117"
+          loading="lazy"
+          decoding="async"
+        >
+      </a>
+      <p class="site-footer__tagline">Professional welding and fabrication services in Poole, Dorset.</p>
+      <address class="site-footer__contact">
+        <p>{{ site.SITE_ADDRESS }}</p>
+        <p><a href="tel:{{ site.SITE_PHONE|cut:' ' }}">{{ site.SITE_PHONE }}</a></p>
+        <p><a href="mailto:{{ site.SITE_EMAIL }}">{{ site.SITE_EMAIL }}</a></p>
+      </address>
+    </div>
+
+    <div class="site-footer__columns">
+      <div>
+        <div class="site-footer__heading">Navigation</div>
+        <a href="{% url 'services' %}" class="site-footer__link">Services</a>
+        <a href="{% url 'portfolio' %}" class="site-footer__link">Portfolio</a>
+        <a href="{% url 'about' %}" class="site-footer__link">About</a>
+        <a href="{% url 'blog' %}" class="site-footer__link">Blog</a>
+        <a href="{% url 'contact' %}" class="site-footer__link">Contact</a>
+      </div>
+      <div>
+        <div class="site-footer__heading">Expertise</div>
+        {% for service in site.SERVICES|slice:":4" %}
+        <a href="{% url 'service_detail' service.slug %}" class="site-footer__link">{{ service.title }}</a>
+        {% endfor %}
+      </div>
+      <div>
+        <div class="site-footer__heading">Legal</div>
+        <a href="{% url 'privacy' %}" class="site-footer__link">Privacy Policy</a>
+        <a href="{% url 'terms' %}" class="site-footer__link">Terms of Service</a>
+        <a href="{% url 'faq' %}" class="site-footer__link">FAQ</a>
+      </div>
+    </div>
+  </div>
+  <div class="container site-footer__bottom">
+    © {{ site.SITE_YEAR }} {{ site.SITE_NAME }}. Built for Durability.
+  </div>
+</footer>

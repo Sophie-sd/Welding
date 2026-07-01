@@ -1,0 +1,33 @@
+{% load static %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ site.SITE_NAME }}",
+  "url": "{{ site.SITE_URL }}"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "{{ site.SITE_NAME }}",
+  "url": "{{ site.SITE_URL }}",
+  "telephone": "{{ site.SITE_PHONE }}",
+  "email": "{{ site.SITE_EMAIL }}",
+  "description": "{{ site.SITE_DESCRIPTION }}",
+  "priceRange": "££",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "564 Ashley Rd",
+    "addressLocality": "Poole",
+    "addressRegion": "Dorset",
+    "postalCode": "BH14 0AG",
+    "addressCountry": "GB"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "United Kingdom"
+  }
+}
+</script>

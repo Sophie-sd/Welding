@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'partials/page_hero.html' with eyebrow='Services' title=service.title lead=service.short image='images/tig-weld.png' image_alt='Professional metal fabrication — KHODAK Metal Solution' show_cta=True cta_service=service.slug preload=True %}
+
+<section class="section section--alt">
+  <div class="container">
+    {% url 'services' as back_url %}
+    {% include 'partials/back_link.html' with back_label='Back to Services' %}
+
+    <div class="prose reveal">
+      <h2 class="heading-md">What We Deliver</h2>
+      <p>KHODAK Metal Solution provides professional {{ service.title|lower }} for industrial, commercial, and residential clients across the United Kingdom. Every project begins with a detailed specification review and ends with documented quality assurance.</p>
+      <p>Our coded welding teams work to AWS D1.1 standards with full traceability on materials, procedures, and inspection records. Whether you need workshop fabrication or on-site execution, we mobilise with the right equipment and certified personnel.</p>
+
+      <h2 class="heading-md service-detail__section-title">Process &amp; Quality</h2>
+      <p>Blueprint analysis → controlled fabrication → dimensional inspection → delivery or on-site installation. We provide transparent pricing with itemised scope documents before work commences.</p>
+
+      <h2 class="heading-md service-detail__section-title">Request a Quote</h2>
+      <p>Submit your project specifications and our engineering team will respond within one business day.</p>
+      <a href="{% url 'contact' %}?service={{ service.slug }}" class="btn btn--primary service-detail__cta" data-quote-open data-service="{{ service.slug }}">Request a Quote</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block schema %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "{{ service.title }}",
+  "description": "{{ service.short }}",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "{{ site.SITE_NAME }}",
+    "url": "{{ site.SITE_URL }}"
+  },
+  "areaServed": "United Kingdom"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.SITE_URL }}/"},
+    {"@type": "ListItem", "position": 2, "name": "Services", "item": "{{ site.SITE_URL }}/services/"},
+    {"@type": "ListItem", "position": 3, "name": "{{ service.title }}"}
+  ]
+}
+</script>
+{% endblock %}

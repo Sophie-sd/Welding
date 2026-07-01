@@ -1,0 +1,81 @@
+{% load pages_media %}
+<div class="blog-filters reveal" role="group" aria-label="Filter articles" data-blog-filters>
+  <span class="blog-filters__label">Filters:</span>
+  <button type="button" class="filter-btn filter-btn--active" data-filter="all">All</button>
+  <button type="button" class="filter-btn" data-filter="technology">Technology</button>
+  <button type="button" class="filter-btn" data-filter="materials">Materials</button>
+  <button type="button" class="filter-btn" data-filter="safety">Safety</button>
+</div>
+
+<div class="blog-grid">
+  {% for post in posts %}
+  <article class="blog-card reveal" data-category="{{ post.category }}">
+    <a href="{% url 'blog_detail' post.slug %}" class="blog-card__image">
+      <img src="{% content_image post %}" alt="{{ post.title }} — welding blog UK" width="600" height="375" loading="lazy">
+    </a>
+    <div class="blog-card__body">
+      {% if post.featured %}
+      <span class="blog-tag blog-tag--featured">Featured</span>
+      {% else %}
+      <span class="blog-tag blog-tag--{{ post.category }}">{{ post.category }}</span>
+      {% endif %}
+      <h2 class="blog-card__title"><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h2>
+      <p class="blog-card__excerpt">{{ post.excerpt }}</p>
+      <footer class="blog-card__footer">
+        <time datetime="{{ post.date }}">{{ post.date_display }}</time>
+        <span aria-hidden="true">↗</span>
+      </footer>
+    </div>
+  </article>
+  {% empty %}
+  <p class="prose">No articles published yet.</p>
+  {% endfor %}
+</div>
+
+{% if page_obj.paginator.num_pages > 1 %}
+<nav class="blog-pagination reveal" aria-label="Blog pagination">
+  {% if page_obj.has_previous %}
+  <a
+    href="?page={{ page_obj.previous_page_number }}"
+    class="blog-pagination__btn"
+    aria-label="Previous page"
+    hx-get="{% url 'blog' %}?page={{ page_obj.previous_page_number }}"
+    hx-target="#blog-content"
+    hx-swap="innerHTML"
+    hx-push-url="true"
+  >←</a>
+  {% else %}
+  <span class="blog-pagination__btn blog-pagination__btn--disabled" aria-hidden="true">←</span>
+  {% endif %}
+
+  {% for num in page_obj.paginator.page_range %}
+    {% if page_obj.number == num %}
+    <span class="blog-pagination__btn blog-pagination__btn--active" aria-current="page">{{ num|stringformat:"02d" }}</span>
+    {% else %}
+    <a
+      href="?page={{ num }}"
+      class="blog-pagination__btn"
+      aria-label="Page {{ num }}"
+      hx-get="{% url 'blog' %}?page={{ num }}"
+      hx-target="#blog-content"
+      hx-swap="innerHTML"
+      hx-push-url="true"
+    >{{ num|stringformat:"02d" }}</a>
+    {% endif %}
+  {% endfor %}
+
+  {% if page_obj.has_next %}
+  <a
+    href="?page={{ page_obj.next_page_number }}"
+    class="blog-pagination__btn"
+    aria-label="Next page"
+    hx-get="{% url 'blog' %}?page={{ page_obj.next_page_number }}"
+    hx-target="#blog-content"
+    hx-swap="innerHTML"
+    hx-push-url="true"
+  >→</a>
+  {% else %}
+  <span class="blog-pagination__btn blog-pagination__btn--disabled" aria-hidden="true">→</span>
+  {% endif %}
+</nav>
+{% endif %}

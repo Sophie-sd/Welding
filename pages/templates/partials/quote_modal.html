@@ -1,0 +1,19 @@
+{% load quote_form_tags %}
+<div class="quote-modal" id="quote-modal" role="dialog" aria-modal="true" aria-labelledby="quote-modal-title" hidden data-quote-modal>
+  <div class="quote-modal__backdrop" data-quote-close tabindex="-1" aria-hidden="true"></div>
+  <div class="quote-modal__panel" role="document">
+    <header class="quote-modal__header">
+      <div class="quote-modal__header-text">
+        <p class="eyebrow eyebrow--mono">Book a Service</p>
+        <h2 class="heading-md" id="quote-modal-title">Request a Quote</h2>
+        <p class="quote-modal__lead">Tell us about your project — we respond within one business day.</p>
+      </div>
+      <button type="button" class="quote-modal__close" aria-label="Close quote form" data-quote-close>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </header>
+    <div class="quote-modal__body">
+      {% quote_form compact=True id_prefix='modal' submit_label='Submit Enquiry' %}
+    </div>
+  </div>
+</div>
