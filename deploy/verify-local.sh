@@ -54,4 +54,5 @@ echo "All ${#REQUIRED_IMAGES[@]} images present."
 
 echo ""
 echo "Local verification passed."
-echo "On Droplet run: REPO_URL=<your-repo> bash deploy/setup-droplet.sh"
+echo "Docker deploy: cp .env.docker.example .env && bash deploy/docker/deploy.sh"
+echo "Droplet setup: REPO_URL=<your-repo> bash deploy/docker/setup-droplet.sh"

@@ -1,0 +1,18 @@
+services:
+  db:
+    restart: always
+    env_file: .env
+
+  web:
+    restart: always
+    env_file: .env
+
+  nginx:
+    build:
+      args:
+        NGINX_CONF: docker.prod.conf
+    restart: always
+    ports:
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
