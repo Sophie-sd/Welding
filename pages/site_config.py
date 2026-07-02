@@ -87,7 +87,7 @@ PORTFOLIO_ITEMS = [
         'title': 'Ironwood Residence',
         'location': 'Austin, TX',
         'detail': 'CUSTOM FABRICATION',
-        'image': 'welder.png',
+        'image': 'portfolio-ironwood.png',
     },
 ]
 

@@ -173,6 +173,7 @@ def restore_portfolio_images():
         'portfolio-nexus.png': (IMAGES_DIR / 'workshop.png', 'center'),
         'portfolio-bridge.png': (IMAGES_DIR / 'welder.png', 'top'),
         'portfolio-residential.png': (IMAGES_DIR / 'hero-contact.png', 'center'),
+        'portfolio-ironwood.png': (ASSETS_DIR / 'portfolio-ironwood.png', 'center'),
     }
     for name, (src, anchor) in portfolio_sources.items():
         img = src if isinstance(src, Image.Image) else Image.open(src)

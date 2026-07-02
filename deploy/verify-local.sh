@@ -39,6 +39,7 @@ REQUIRED_IMAGES=(
     portfolio-nexus.png
     portfolio-bridge.png
     portfolio-residential.png
+    portfolio-ironwood.png
     workshop.png
     tig-weld.png
     hero-faq.png
