@@ -1,5 +1,7 @@
-{% extends "unfold/base_site.html" %}
-{% load static %}
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block extrahead %}
 {{ block.super }}
