@@ -54,7 +54,7 @@
   --radius-none: 0;
   --shadow-none: none;
 
-  --header-height: 4.5rem;
+  --header-height: 5rem;
   --touch-min: 2.75rem;
 
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);

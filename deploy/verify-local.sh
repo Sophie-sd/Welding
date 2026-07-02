@@ -32,6 +32,10 @@ REQUIRED_IMAGES=(
     hero-contact.png
     project-frame.png
     project-tig.png
+    portfolio-omega.png
+    portfolio-nexus.png
+    portfolio-bridge.png
+    portfolio-residential.png
     workshop.png
     tig-weld.png
     welder.png

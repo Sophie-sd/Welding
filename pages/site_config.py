@@ -63,7 +63,7 @@ PORTFOLIO_ITEMS = [
         'title': 'Omega Metalworks Facility',
         'location': 'Detroit, MI',
         'detail': '24,000 SQ FT',
-        'image': 'project-frame.png',
+        'image': 'portfolio-omega.png',
     },
     {
         'slug': 'nexus-tower',
@@ -71,7 +71,7 @@ PORTFOLIO_ITEMS = [
         'title': 'Nexus Corporate Tower',
         'location': 'Chicago, IL',
         'detail': '12 STORIES',
-        'image': 'project-frame.png',
+        'image': 'portfolio-nexus.png',
     },
     {
         'slug': 'bridge-reinforcement',
@@ -79,7 +79,7 @@ PORTFOLIO_ITEMS = [
         'title': 'Bridge Support Reinforcement',
         'location': 'Pittsburgh, PA',
         'detail': 'STRUCTURAL WELDING',
-        'image': 'welder.png',
+        'image': 'portfolio-bridge.png',
     },
     {
         'slug': 'ironwood-residence',
@@ -87,7 +87,7 @@ PORTFOLIO_ITEMS = [
         'title': 'Ironwood Residence',
         'location': 'Austin, TX',
         'detail': 'CUSTOM FABRICATION',
-        'image': 'workshop.png',
+        'image': 'portfolio-residential.png',
     },
 ]
 

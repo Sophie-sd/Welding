@@ -1,5 +1,7 @@
 .value-grid {
   background: var(--color-bg-alt);
+  position: relative;
+  z-index: 1;
 }
 
 .value-grid__header {

@@ -62,7 +62,7 @@ def crop_and_save(image, box, name, size):
     save_image(cropped, name)
 
 
-def center_crop_to_ratio(image, target_w, target_h):
+def center_crop_to_ratio(image, target_w, target_h, anchor='center'):
     target_ratio = target_w / target_h
     width, height = image.size
     current_ratio = width / height
@@ -72,7 +72,12 @@ def center_crop_to_ratio(image, target_w, target_h):
         box = (left, 0, left + new_w, height)
     else:
         new_h = int(width / target_ratio)
-        top = (height - new_h) // 2
+        if anchor == 'top':
+            top = 0
+        elif anchor == 'bottom':
+            top = height - new_h
+        else:
+            top = (height - new_h) // 2
         box = (0, top, width, top + new_h)
     return image.crop(box).resize((target_w, target_h), Image.Resampling.LANCZOS)
 
@@ -85,16 +90,34 @@ def restore_hero_home():
 
 
 def restore_project_frame():
-    mockup = Image.open(IMAGES_DIR / 'hero-workshop.png')
-    # Crop only the left showcase photo — not the section header or card labels.
-    crop_and_save(mockup, (18, 1040, 284, 1165), 'project-frame.png', (800, 500))
+    frame = BASE_DIR / '.tmp' / 'video-frames' / 'frame_006.jpg'
+    if not frame.exists():
+        raise FileNotFoundError(frame)
+    construction = Image.open(frame).crop((62, 708, 434, 862))
+    save_image(center_crop_to_ratio(construction.convert('RGB'), 800, 600), 'project-frame.png')
 
 
 def restore_project_tig():
     src = IMAGES_DIR / 'tig-weld.png'
     if not src.exists():
         raise FileNotFoundError(src)
-    save_image(center_crop_to_ratio(Image.open(src).convert('RGB'), 800, 500), 'project-tig.png')
+    save_image(center_crop_to_ratio(Image.open(src).convert('RGB'), 800, 600, 'top'), 'project-tig.png')
+
+
+def restore_portfolio_images():
+    frame = BASE_DIR / '.tmp' / 'video-frames' / 'frame_006.jpg'
+    if not frame.exists():
+        raise FileNotFoundError(frame)
+    f6 = Image.open(frame)
+    portfolio_sources = {
+        'portfolio-omega.png': (f6.crop((200, 708, 434, 862)), 'center'),
+        'portfolio-nexus.png': (IMAGES_DIR / 'workshop.png', 'center'),
+        'portfolio-bridge.png': (IMAGES_DIR / 'welder.png', 'top'),
+        'portfolio-residential.png': (IMAGES_DIR / 'hero-about.png', 'center'),
+    }
+    for name, (src, anchor) in portfolio_sources.items():
+        img = src if isinstance(src, Image.Image) else Image.open(src)
+        save_image(center_crop_to_ratio(img.convert('RGB'), 800, 600, anchor), name)
 
 
 def restore_workshop():
@@ -145,6 +168,7 @@ def main():
     restore_from_screenshots()
     restore_project_frame()
     restore_project_tig()
+    restore_portfolio_images()
     restore_hero_home()
 
 
