@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import environ
+from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -18,14 +19,18 @@ DEBUG = env('DEBUG')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
 
 INSTALLED_APPS = [
+    'unfold',
+    'unfold.contrib.filters',
+    'unfold.contrib.forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tinymce',
     'django_htmx',
-    'pages',
+    'pages.apps.PagesConfig',
 ]
 
 MIDDLEWARE = [
@@ -45,7 +50,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,8 +79,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'uk'
+TIME_ZONE = 'Europe/London'
 USE_I18N = True
 USE_TZ = True
 
@@ -99,3 +104,100 @@ QUOTE_NOTIFICATION_EMAIL = env(
 )
 
 LOGIN_URL = '/admin/login/'
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 400,
+    'menubar': False,
+    'plugins': 'link lists image code',
+    'toolbar': 'undo redo | bold italic underline | bullist numlist | link image | code',
+    'content_css': False,
+    'skin': 'oxide',
+}
+
+UNFOLD = {
+    'SITE_TITLE': 'KHODAK — Адмінпанель',
+    'SITE_HEADER': 'KHODAK Metal Solution',
+    'SITE_SUBHEADER': 'Керування контентом сайту',
+    'SITE_URL': '/',
+    'SHOW_VIEW_ON_SITE': True,
+    'COLORS': {
+        'primary': {
+            '50': 'oklch(97% 0.02 45)',
+            '100': 'oklch(94% 0.04 45)',
+            '200': 'oklch(88% 0.08 45)',
+            '300': 'oklch(78% 0.12 45)',
+            '400': 'oklch(68% 0.16 45)',
+            '500': 'oklch(59% 0.19 45)',
+            '600': 'oklch(52% 0.18 45)',
+            '700': 'oklch(45% 0.16 45)',
+            '800': 'oklch(38% 0.14 45)',
+            '900': 'oklch(32% 0.12 45)',
+            '950': 'oklch(24% 0.10 45)',
+        },
+        'font': {
+            'subtle-light': 'var(--color-base-500)',
+            'subtle-dark': 'var(--color-base-400)',
+            'default-light': 'var(--color-base-600)',
+            'default-dark': 'oklch(92% 0.01 250)',
+            'important-light': 'var(--color-base-900)',
+            'important-dark': 'oklch(98% 0 0)',
+        },
+    },
+    'SIDEBAR': {
+        'show_search': True,
+        'command_search': True,
+        'show_all_applications': False,
+        'navigation': [
+            {
+                'title': 'Налаштування',
+                'separator': False,
+                'items': [
+                    {
+                        'title': 'Налаштування сайту',
+                        'icon': 'settings',
+                        'link': reverse_lazy('admin:pages_sitesettings_changelist'),
+                    },
+                ],
+            },
+            {
+                'title': 'Контент',
+                'separator': True,
+                'items': [
+                    {
+                        'title': 'Послуги',
+                        'icon': 'build',
+                        'link': reverse_lazy('admin:pages_service_changelist'),
+                    },
+                    {
+                        'title': 'Портфоліо',
+                        'icon': 'photo_library',
+                        'link': reverse_lazy('admin:pages_portfolioitem_changelist'),
+                    },
+                    {
+                        'title': 'Блог',
+                        'icon': 'article',
+                        'link': reverse_lazy('admin:pages_blogpost_changelist'),
+                    },
+                    {
+                        'title': 'FAQ',
+                        'icon': 'help',
+                        'link': reverse_lazy('admin:pages_faqitem_changelist'),
+                    },
+                ],
+            },
+            {
+                'title': 'Заявки',
+                'separator': True,
+                'items': [
+                    {
+                        'title': 'Заявки',
+                        'icon': 'inbox',
+                        'link': reverse_lazy('admin:pages_quoterequest_changelist'),
+                        'badge': 'pages.admin.new_quote_requests_badge',
+                        'badge_variant': 'primary',
+                    },
+                ],
+            },
+        ],
+    },
+}

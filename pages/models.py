@@ -23,8 +23,8 @@ class SiteSettings(models.Model):
     site_year = models.PositiveIntegerField(default=2024)
 
     class Meta:
-        verbose_name = 'Site settings'
-        verbose_name_plural = 'Site settings'
+        verbose_name = 'Налаштування сайту'
+        verbose_name_plural = 'Налаштування сайту'
 
     def __str__(self):
         return self.site_name
@@ -56,6 +56,8 @@ class Service(models.Model):
 
     class Meta:
         ordering = ['sort_order', 'title']
+        verbose_name = 'Послуга'
+        verbose_name_plural = 'Послуги'
 
     def __str__(self):
         return self.title
@@ -86,6 +88,8 @@ class PortfolioItem(models.Model):
 
     class Meta:
         ordering = ['sort_order', 'title']
+        verbose_name = 'Робота портфоліо'
+        verbose_name_plural = 'Портфоліо'
 
     def __str__(self):
         return self.title
@@ -115,6 +119,8 @@ class BlogPost(models.Model):
 
     class Meta:
         ordering = ['-published_at', 'title']
+        verbose_name = 'Стаття блогу'
+        verbose_name_plural = 'Блог'
 
     def __str__(self):
         return self.title
@@ -144,8 +150,8 @@ class FAQItem(models.Model):
 
     class Meta:
         ordering = ['sort_order', 'question']
-        verbose_name = 'FAQ item'
-        verbose_name_plural = 'FAQ items'
+        verbose_name = 'Питання FAQ'
+        verbose_name_plural = 'FAQ'
 
     def __str__(self):
         return self.question
@@ -153,9 +159,9 @@ class FAQItem(models.Model):
 
 class QuoteRequest(models.Model):
     class Status(models.TextChoices):
-        NEW = 'new', 'New'
-        IN_PROGRESS = 'in_progress', 'In progress'
-        CLOSED = 'closed', 'Closed'
+        NEW = 'new', 'Нова'
+        IN_PROGRESS = 'in_progress', 'В обробці'
+        CLOSED = 'closed', 'Закрита'
 
     name = models.CharField(max_length=80)
     phone = models.CharField(max_length=30)
@@ -174,6 +180,8 @@ class QuoteRequest(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'
 
     def __str__(self):
         return f'{self.name} — {self.created_at:%Y-%m-%d}'

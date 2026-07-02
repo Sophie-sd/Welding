@@ -62,15 +62,39 @@ def crop_and_save(image, box, name, size):
     save_image(cropped, name)
 
 
-def restore_from_mockup():
-    hero_about = Image.open(IMAGES_DIR / 'hero-about.png').convert('RGB')
-    hero_about = hero_about.resize((1376, 768), Image.Resampling.LANCZOS)
-    save_image(hero_about, 'hero-home.png')
+def center_crop_to_ratio(image, target_w, target_h):
+    target_ratio = target_w / target_h
+    width, height = image.size
+    current_ratio = width / height
+    if current_ratio > target_ratio:
+        new_w = int(height * target_ratio)
+        left = (width - new_w) // 2
+        box = (left, 0, left + new_w, height)
+    else:
+        new_h = int(width / target_ratio)
+        top = (height - new_h) // 2
+        box = (0, top, width, top + new_h)
+    return image.crop(box).resize((target_w, target_h), Image.Resampling.LANCZOS)
 
+
+def restore_hero_home():
+    src = IMAGES_DIR / 'welder.png'
+    if not src.exists():
+        src = IMAGES_DIR / 'hero-about.png'
+    save_image(center_crop_to_ratio(Image.open(src).convert('RGB'), 1376, 768), 'hero-home.png')
+
+
+def restore_project_frame():
     mockup = Image.open(IMAGES_DIR / 'hero-workshop.png')
-    width, height = mockup.size
-    crop_and_save(mockup, (18, 930, width - 18, 1180), 'project-frame.png', (800, 500))
-    crop_and_save(mockup, (18, 1180, width - 18, 1430), 'project-tig.png', (800, 500))
+    # Crop only the left showcase photo — not the section header or card labels.
+    crop_and_save(mockup, (18, 1040, 284, 1165), 'project-frame.png', (800, 500))
+
+
+def restore_project_tig():
+    src = IMAGES_DIR / 'tig-weld.png'
+    if not src.exists():
+        raise FileNotFoundError(src)
+    save_image(center_crop_to_ratio(Image.open(src).convert('RGB'), 800, 500), 'project-tig.png')
 
 
 def restore_workshop():
@@ -117,9 +141,11 @@ def main():
     restore_logo()
     copy_asset('hero-about.png')
     copy_asset('hero-contact.png')
-    restore_from_mockup()
     restore_workshop()
     restore_from_screenshots()
+    restore_project_frame()
+    restore_project_tig()
+    restore_hero_home()
 
 
 if __name__ == '__main__':
