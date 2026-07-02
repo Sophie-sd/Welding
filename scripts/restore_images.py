@@ -62,6 +62,65 @@ def crop_and_save(image, box, name, size):
     save_image(cropped, name)
 
 
+CARD_IMAGE_SIZE = (1600, 1200)
+CONSTRUCTION_FRAME_BOX = (0, 380, 1400, 873)
+
+
+def trim_content_margin(image, threshold=210):
+    rgb = image.convert('RGB')
+    width, height = rgb.size
+    pixels = rgb.load()
+    top, left, bottom, right = height, width, 0, 0
+
+    def mark_content(x, y):
+        nonlocal top, left, bottom, right
+        red, green, blue = pixels[x, y]
+        if red < threshold or green < threshold or blue < threshold:
+            top = min(top, y)
+            bottom = max(bottom, y)
+            left = min(left, x)
+            right = max(right, x)
+
+    for y in range(height):
+        for x in range(0, width, max(1, width // 24)):
+            mark_content(x, y)
+    for x in range(width):
+        for y in range(0, height, max(1, height // 24)):
+            mark_content(x, y)
+
+    if bottom <= top or right <= left:
+        return rgb
+
+    pad = max(2, min(width, height) // 200)
+    return rgb.crop((
+        max(0, left - pad),
+        max(0, top - pad),
+        min(width, right + pad),
+        min(height, bottom + pad),
+    ))
+    
+
+def crop_light_top_band(image, max_rows=80, threshold=210):
+    rgb = image.convert('RGB')
+    width, height = rgb.size
+    pixels = rgb.load()
+    top = 0
+    for y in range(min(max_rows, height)):
+        if all(
+            pixels[x, y][0] > threshold
+            and pixels[x, y][1] > threshold
+            and pixels[x, y][2] > threshold
+            for x in range(0, width, max(1, width // 30))
+        ):
+            top = y + 1
+        else:
+            break
+    if top == 0:
+        return image
+    trimmed = rgb.crop((0, top, width, height))
+    return trimmed.resize((width, height), Image.Resampling.LANCZOS)
+
+
 def center_crop_to_ratio(image, target_w, target_h, anchor='center'):
     target_ratio = target_w / target_h
     width, height = image.size
@@ -82,6 +141,14 @@ def center_crop_to_ratio(image, target_w, target_h, anchor='center'):
     return image.crop(box).resize((target_w, target_h), Image.Resampling.LANCZOS)
 
 
+def construction_frame_source():
+    frame = BASE_DIR / '.tmp' / 'video-frames' / 'frame_006.jpg'
+    if not frame.exists():
+        raise FileNotFoundError(frame)
+    left, top, right, bottom = CONSTRUCTION_FRAME_BOX
+    return Image.open(frame).crop((left, top, right, bottom))
+
+
 def restore_hero_home():
     src = IMAGES_DIR / 'welder.png'
     if not src.exists():
@@ -90,34 +157,32 @@ def restore_hero_home():
 
 
 def restore_project_frame():
-    frame = BASE_DIR / '.tmp' / 'video-frames' / 'frame_006.jpg'
-    if not frame.exists():
-        raise FileNotFoundError(frame)
-    construction = Image.open(frame).crop((62, 708, 434, 862))
-    save_image(center_crop_to_ratio(construction.convert('RGB'), 800, 600), 'project-frame.png')
+    construction = construction_frame_source()
+    save_image(center_crop_to_ratio(construction.convert('RGB'), *CARD_IMAGE_SIZE), 'project-frame.png')
 
 
 def restore_project_tig():
     src = IMAGES_DIR / 'tig-weld.png'
     if not src.exists():
         raise FileNotFoundError(src)
-    save_image(center_crop_to_ratio(Image.open(src).convert('RGB'), 800, 600, 'top'), 'project-tig.png')
+    cleaned = trim_content_margin(Image.open(src))
+    cropped = center_crop_to_ratio(cleaned, *CARD_IMAGE_SIZE, 'center')
+    save_image(crop_light_top_band(cropped), 'project-tig.png')
 
 
 def restore_portfolio_images():
-    frame = BASE_DIR / '.tmp' / 'video-frames' / 'frame_006.jpg'
-    if not frame.exists():
-        raise FileNotFoundError(frame)
-    f6 = Image.open(frame)
+    construction = construction_frame_source()
     portfolio_sources = {
-        'portfolio-omega.png': (f6.crop((200, 708, 434, 862)), 'center'),
+        'portfolio-omega.png': (construction, 'center'),
         'portfolio-nexus.png': (IMAGES_DIR / 'workshop.png', 'center'),
         'portfolio-bridge.png': (IMAGES_DIR / 'welder.png', 'top'),
         'portfolio-residential.png': (IMAGES_DIR / 'hero-about.png', 'center'),
     }
     for name, (src, anchor) in portfolio_sources.items():
         img = src if isinstance(src, Image.Image) else Image.open(src)
-        save_image(center_crop_to_ratio(img.convert('RGB'), 800, 600, anchor), name)
+        if name == 'portfolio-bridge.png':
+            img = trim_content_margin(img)
+        save_image(center_crop_to_ratio(img.convert('RGB'), *CARD_IMAGE_SIZE, anchor), name)
 
 
 def restore_workshop():

@@ -34,7 +34,12 @@ def block_image(context, page, key, css_class='', fallback_static='', alt=''):
     )
     alt_text = alt or get_block_text(page, f'{key}_alt', site_blocks=site_blocks)
     class_attr = f' class="{css_class}"' if css_class else ''
-    return format_html('<img src="{}" alt="{}"{} loading="lazy">', src, alt_text, mark_safe(class_attr))
+    return format_html(
+        '<img src="{}" alt="{}" width="1600" height="1200"{} loading="lazy">',
+        src,
+        alt_text,
+        mark_safe(class_attr),
+    )
 
 
 @register.simple_tag(takes_context=True)
