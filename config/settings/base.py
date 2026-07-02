@@ -119,7 +119,8 @@ TINYMCE_DEFAULT_CONFIG = {
 UNFOLD = {
     'SITE_TITLE': 'KHODAK — Адмінпанель',
     'SITE_HEADER': 'KHODAK Metal Solution',
-    'SITE_SUBHEADER': 'Керування контентом сайту',
+    'SITE_SUBHEADER': 'Панель керування сайтом зварювальних послуг',
+    'SITE_ICON': '/static/images/favicon/favicon.svg',
     'SITE_URL': '/',
     'SHOW_VIEW_ON_SITE': True,
     'COLORS': {

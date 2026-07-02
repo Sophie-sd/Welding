@@ -151,7 +151,7 @@ BLOCK_DEFAULTS: dict[tuple[str, str], str] = {
     ),
     ('home', 'showcase_card_1_category'): 'Structural Installation',
     ('home', 'showcase_card_1_title'): 'Heavy Industrial Frame',
-    ('home', 'showcase_card_2_image'): 'images/project-tig.png',
+    ('home', 'showcase_card_2_image'): 'images/home-showcase-tig.png',
     ('home', 'showcase_card_2_image_alt'): (
         'Stainless steel TIG weld joint — precision welding UK'
     ),

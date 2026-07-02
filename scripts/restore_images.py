@@ -249,16 +249,38 @@ def restore_hero_blog():
     save_image(crop_light_top_band(img), 'hero-blog.png')
 
 
+def restore_home_showcase_tig():
+    src = ASSETS_DIR / 'home-showcase-tig.png'
+    if not src.exists():
+        raise FileNotFoundError(src)
+    img = Image.open(src).convert('RGB')
+    img = center_crop_to_ratio(img, *CARD_IMAGE_SIZE, 'center')
+    save_image(crop_light_top_band(img), 'home-showcase-tig.png')
+
+
+def restore_blog_featured_structural():
+    src = ASSETS_DIR / 'blog-featured-structural.png'
+    if not src.exists():
+        raise FileNotFoundError(src)
+    img = Image.open(src).convert('RGB')
+    img = center_crop_to_ratio(img, *CARD_IMAGE_SIZE, 'center')
+    save_image(crop_light_top_band(img), 'blog-featured-structural.png')
+
+
+def restore_blog_blueprints():
+    src = ASSETS_DIR / 'blog-blueprints.png'
+    if not src.exists():
+        raise FileNotFoundError(src)
+    img = Image.open(src).convert('RGB')
+    img = center_crop_to_ratio(img, *CARD_IMAGE_SIZE, 'center')
+    save_image(crop_light_top_band(img), 'blog-blueprints.png')
+
+
 def restore_blueprints():
-    frame = BASE_DIR / '.tmp' / 'video-frames' / 'frame_007.jpg'
-    if not frame.exists():
-        raise FileNotFoundError(frame)
-    img = Image.open(frame).convert('RGB')
-    w, h = img.size
-    box = (int(w * 0.68), int(h * 0.34), int(w * 0.98), int(h * 0.58))
-    cropped = img.crop(box)
-    cropped = cropped.resize((1200, 750), Image.Resampling.LANCZOS)
-    save_image(crop_light_top_band(cropped), 'blueprints.png')
+    restore_blog_blueprints()
+    legacy = IMAGES_DIR / 'blog-blueprints.png'
+    if legacy.exists():
+        save_image(Image.open(legacy).convert('RGB'), 'blueprints.png')
 
 
 def restore_from_screenshots():
@@ -278,6 +300,8 @@ def main():
     restore_hero_blog()
     restore_project_frame()
     restore_project_tig()
+    restore_home_showcase_tig()
+    restore_blog_featured_structural()
     restore_portfolio_images()
     restore_hero_home()
 

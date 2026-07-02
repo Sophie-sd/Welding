@@ -33,6 +33,8 @@ REQUIRED_IMAGES=(
     project-frame.png
     heavy-industrial-frame-source.png
     project-tig.png
+    home-showcase-tig.png
+    blog-featured-structural.png
     portfolio-omega.png
     portfolio-nexus.png
     portfolio-bridge.png
@@ -44,7 +46,15 @@ REQUIRED_IMAGES=(
     hero-blog.png
     welder.png
     blueprints.png
+    blog-blueprints.png
     placeholder.png
+)
+
+FAVICON_FILES=(
+    favicon/favicon.svg
+    favicon/favicon-32.png
+    favicon/apple-touch-icon.png
+    favicon/favicon.ico
 )
 
 echo "==> Static images"
@@ -59,6 +69,17 @@ if [[ "${missing}" -eq 1 ]]; then
     exit 1
 fi
 echo "All ${#REQUIRED_IMAGES[@]} images present."
+
+for img in "${FAVICON_FILES[@]}"; do
+    if [[ ! -f "static/images/${img}" ]]; then
+        echo "MISSING: static/images/${img}"
+        missing=1
+    fi
+done
+if [[ "${missing}" -eq 1 ]]; then
+    exit 1
+fi
+echo "All ${#FAVICON_FILES[@]} favicon files present."
 
 echo ""
 echo "Local verification passed."

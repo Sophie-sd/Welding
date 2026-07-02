@@ -1,15 +1,39 @@
 from django.contrib import admin
-from django.utils.html import format_html
 from tinymce.widgets import TinyMCE
 from unfold.admin import ModelAdmin
 
 from .admin_site_content_proxies import register_site_content_section_admins
-from .admin_utils import ReadableUnfoldFieldsMixin, SingletonModelAdminMixin
+from .admin_utils import (
+    AdminImageWebpMixin,
+    ImagePreviewMixin,
+    ReadableUnfoldFieldsMixin,
+    SingletonModelAdminMixin,
+)
+from .cms_field_hints import get_model_image_hint
 from .models import BlogPost, FAQItem, PortfolioItem, QuoteRequest, Service, SiteSettings
 
 TINYMCE_FIELDS = frozenset({'body', 'answer'})
 
+MODEL_FIELD_HELP = {
+    'title': 'Заголовок. Не перевищуйте рекомендовану довжину для коректного відображення.',
+    'short': 'Короткий опис послуги. Рекомендовано до 240 символів.',
+    'excerpt': 'Короткий опис статті. Рекомендовано до 240 символів.',
+    'question': 'Питання FAQ. Максимум 255 символів.',
+    'answer': 'Відповідь FAQ. Рекомендовано лаконічний текст до 600 символів.',
+    'location': 'Локація проєкту. Максимум 120 символів.',
+    'detail': 'Додаткова мітка проєкту. Максимум 120 символів.',
+    'static_image': 'Імʼя файлу в static/images/ як резерв, якщо не завантажено media-зображення.',
+    'image': get_model_image_hint(),
+}
+
 register_site_content_section_admins()
+
+
+def apply_model_field_help(formfield, field_name: str):
+    help_text = MODEL_FIELD_HELP.get(field_name)
+    if help_text and formfield is not None:
+        formfield.help_text = help_text
+    return formfield
 
 
 def new_quote_requests_badge(request):
@@ -59,11 +83,12 @@ class ServiceAdmin(ModelAdmin):
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name in TINYMCE_FIELDS:
             kwargs['widget'] = TinyMCE()
-        return super().formfield_for_dbfield(db_field, request, **kwargs)
+        formfield = super().formfield_for_dbfield(db_field, request, **kwargs)
+        return apply_model_field_help(formfield, db_field.name)
 
 
 @admin.register(PortfolioItem)
-class PortfolioItemAdmin(ModelAdmin):
+class PortfolioItemAdmin(AdminImageWebpMixin, ImagePreviewMixin, ModelAdmin):
     list_display = (
         'title',
         'category',
@@ -88,18 +113,17 @@ class PortfolioItemAdmin(ModelAdmin):
         }),
     )
 
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        formfield = super().formfield_for_dbfield(db_field, request, **kwargs)
+        return apply_model_field_help(formfield, db_field.name)
+
     @admin.display(description='Превʼю')
     def get_image_preview(self, obj):
-        if obj and obj.image:
-            return format_html(
-                '<img src="{}" style="max-height:120px;border-radius:6px;" />',
-                obj.image.url,
-            )
-        return '—'
+        return ImagePreviewMixin.get_image_preview(self, obj)
 
 
 @admin.register(BlogPost)
-class BlogPostAdmin(ModelAdmin):
+class BlogPostAdmin(AdminImageWebpMixin, ImagePreviewMixin, ModelAdmin):
     list_display = (
         'title',
         'category',
@@ -128,16 +152,12 @@ class BlogPostAdmin(ModelAdmin):
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name in TINYMCE_FIELDS:
             kwargs['widget'] = TinyMCE()
-        return super().formfield_for_dbfield(db_field, request, **kwargs)
+        formfield = super().formfield_for_dbfield(db_field, request, **kwargs)
+        return apply_model_field_help(formfield, db_field.name)
 
     @admin.display(description='Превʼю')
     def get_image_preview(self, obj):
-        if obj and obj.image:
-            return format_html(
-                '<img src="{}" style="max-height:120px;border-radius:6px;" />',
-                obj.image.url,
-            )
-        return '—'
+        return ImagePreviewMixin.get_image_preview(self, obj)
 
 
 @admin.register(FAQItem)
@@ -156,7 +176,8 @@ class FAQItemAdmin(ModelAdmin):
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name in TINYMCE_FIELDS:
             kwargs['widget'] = TinyMCE()
-        return super().formfield_for_dbfield(db_field, request, **kwargs)
+        formfield = super().formfield_for_dbfield(db_field, request, **kwargs)
+        return apply_model_field_help(formfield, db_field.name)
 
 
 @admin.register(QuoteRequest)

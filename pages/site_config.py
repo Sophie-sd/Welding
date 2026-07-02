@@ -87,7 +87,7 @@ PORTFOLIO_ITEMS = [
         'title': 'Ironwood Residence',
         'location': 'Austin, TX',
         'detail': 'CUSTOM FABRICATION',
-        'image': 'portfolio-residential.png',
+        'image': 'welder.png',
     },
 ]
 
@@ -103,7 +103,7 @@ BLOG_POSTS = [
         'date': '2024-10-24',
         'date_display': 'Oct 24, 2024',
         'featured': True,
-        'image': 'project-frame.png',
+        'image': 'blog-featured-structural.png',
     },
     {
         'slug': 'tig-vs-mig-aluminum',
@@ -129,7 +129,7 @@ BLOG_POSTS = [
         'date': '2024-09-10',
         'date_display': 'Sep 10, 2024',
         'featured': False,
-        'image': 'blueprints.png',
+        'image': 'blog-blueprints.png',
     },
     {
         'slug': 'aws-safety-standards',
@@ -142,7 +142,7 @@ BLOG_POSTS = [
         'date': '2024-08-05',
         'date_display': 'Aug 05, 2024',
         'featured': False,
-        'image': 'welder.png',
+        'image': 'portfolio-residential.png',
     },
 ]
 

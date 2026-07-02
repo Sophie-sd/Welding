@@ -1,8 +1,11 @@
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from unfold.admin import ModelAdmin
 
 from .admin_site_content_widgets import apply_readable_widget
+from .cms_field_hints import IMAGE_PROFILES, get_field_hint, get_model_image_hint
+from .utils.image_upload import ImageUploadError, process_admin_image
 
 
 class SingletonModelAdminMixin:
@@ -42,3 +45,17 @@ class ImagePreviewMixin:
         return '—'
 
     get_image_preview.short_description = 'Превʼю'
+
+
+class AdminImageWebpMixin:
+    admin_image_profile = 'content'
+
+    def save_model(self, request, obj, form, change):
+        uploaded = form.cleaned_data.get('image')
+        if uploaded:
+            try:
+                obj.image = process_admin_image(uploaded, profile=self.admin_image_profile)
+            except ImageUploadError as exc:
+                messages.error(request, str(exc))
+                return
+        super().save_model(request, obj, form, change)

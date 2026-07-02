@@ -20,10 +20,12 @@ from .block_defaults import (
     default_for_block,
     is_visibility_key,
 )
+from .cms_field_hints import get_field_hint
 from .context_processors import SITE_BLOCKS_CACHE_KEY
 from .models import SiteBlock, SiteSettings
 from .site_content_registry import ContentSection, get_section, iter_section_blocks
 from .admin_site_content_widgets import CmsAdminTextInputWidget, CmsAdminTextareaWidget
+from .utils.image_upload import ImageUploadError, process_admin_image
 
 
 def block_field_name(page: str, key: str, suffix: str) -> str:
@@ -47,6 +49,15 @@ def load_section_blocks(section: ContentSection) -> dict[tuple[str, str], SiteBl
         )
         blocks[(page, key)] = block
     return blocks
+
+
+def apply_field_hint(field, page: str, key: str):
+    hint = get_field_hint(page, key)
+    help_text = hint.help_text_uk()
+    if help_text:
+        field.help_text = help_text
+    if hint.char_max and hasattr(field.widget, 'attrs'):
+        field.widget.attrs['maxlength'] = hint.char_max
 
 
 class SitePageContentForm(forms.Form):
@@ -81,17 +92,21 @@ class SitePageContentForm(forms.Form):
             content_type = block_content_type(page, key)
             if content_type == SiteBlock.ContentType.IMAGE:
                 block = self.blocks[(page, key)]
-                self.fields[block_field_name(page, key, 'image')] = forms.ImageField(
+                image_field = forms.ImageField(
                     label=label,
                     required=False,
                     widget=UnfoldAdminFileFieldWidget(),
                 )
-                self.fields[block_field_name(page, key, 'static_path')] = forms.CharField(
+                apply_field_hint(image_field, page, key)
+                self.fields[block_field_name(page, key, 'image')] = image_field
+                static_field = forms.CharField(
                     label=f'{label} (static fallback)',
                     required=False,
                     initial=block.text_html,
                     widget=CmsAdminTextInputWidget(),
+                    help_text='Резервний шлях у static/images/, якщо файл не завантажено.',
                 )
+                self.fields[block_field_name(page, key, 'static_path')] = static_field
                 continue
 
             if key in RICHTEXT_KEYS:
@@ -109,6 +124,27 @@ class SitePageContentForm(forms.Form):
                 initial=self.blocks[(page, key)].text_html,
                 widget=widget,
             )
+            apply_field_hint(self.fields[block_field_name(page, key, 'text_html')], page, key)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        for page, key in iter_section_blocks(self.section):
+            if block_content_type(page, key) != SiteBlock.ContentType.IMAGE:
+                continue
+            image = cleaned_data.get(block_field_name(page, key, 'image'))
+            if not image:
+                continue
+            hint = get_field_hint(page, key)
+            if not hint.image_profile:
+                continue
+            try:
+                cleaned_data[block_field_name(page, key, 'image')] = process_admin_image(
+                    image,
+                    profile=hint.image_profile,
+                )
+            except ImageUploadError as exc:
+                self.add_error(block_field_name(page, key, 'image'), exc)
+        return cleaned_data
 
     def save(self):
         section = self.section
