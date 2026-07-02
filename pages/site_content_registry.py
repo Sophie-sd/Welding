@@ -77,8 +77,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='hero',
         page_slug='home',
-        title='Головна — Hero',
-        sidebar_title='Головна — Hero',
+        title='Головна — Верхній банер',
+        sidebar_title='Верхній банер',
         sidebar_icon='home',
         preview_url='/',
         visibility_key='hero_section_visible',
@@ -94,8 +94,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='value_grid',
         page_slug='home',
-        title='Головна — Value Grid',
-        sidebar_title='Головна — Переваги',
+        title='Головна — Переваги',
+        sidebar_title='Переваги',
         sidebar_icon='grid_view',
         preview_url='/',
         visibility_key='value_grid_section_visible',
@@ -119,8 +119,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='showcase',
         page_slug='home',
-        title='Головна — Showcase',
-        sidebar_title='Головна — Showcase',
+        title='Головна — Проєкти',
+        sidebar_title='Проєкти',
         sidebar_icon='photo_library',
         preview_url='/',
         visibility_key='showcase_section_visible',
@@ -144,7 +144,7 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
         slug='header',
         page_slug='site',
         title='Шапка сайту',
-        sidebar_title='Шапка',
+        sidebar_title='Шапка сайту',
         sidebar_icon='web',
         preview_url='/',
         admin_model_name='siteheadersettings',
@@ -163,14 +163,14 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
                 'header_nav_contact_label',
                 'header_nav_contact_visible',
             )),
-            FieldGroup('CTA', ('header_cta_text', 'header_cta_visible')),
+            FieldGroup('Кнопка дії', ('header_cta_text', 'header_cta_visible')),
         ),
     ),
     ContentSection(
         slug='footer',
         page_slug='site',
         title='Підвал сайту',
-        sidebar_title='Підвал',
+        sidebar_title='Підвал сайту',
         sidebar_icon='bottom_navigation',
         preview_url='/',
         visibility_key='footer_section_visible',
@@ -185,8 +185,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='quote_modal',
         page_slug='site',
-        title='Модальне вікно заявки',
-        sidebar_title='Quote Modal',
+        title='Вікно заявки',
+        sidebar_title='Вікно заявки',
         sidebar_icon='chat',
         preview_url='/',
         visibility_key='quote_modal_section_visible',
@@ -202,8 +202,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='hero',
         page_slug='about',
-        title='Про нас — Hero',
-        sidebar_title='Про нас — Hero',
+        title='Про нас — Верхній банер',
+        sidebar_title='Верхній банер',
         sidebar_icon='info',
         preview_url='/about/',
         visibility_key='hero_section_visible',
@@ -213,8 +213,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='story',
         page_slug='about',
-        title='Про нас — Our Story',
-        sidebar_title='Про нас — Історія',
+        title='Про нас — Наша історія',
+        sidebar_title='Наша історія',
         sidebar_icon='menu_book',
         preview_url='/about/',
         visibility_key='story_section_visible',
@@ -231,8 +231,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='imperatives',
         page_slug='about',
-        title='Про нас — Core Imperatives',
-        sidebar_title='Про нас — Імперативи',
+        title='Про нас — Цінності',
+        sidebar_title='Цінності',
         sidebar_icon='verified',
         preview_url='/about/',
         visibility_key='imperatives_section_visible',
@@ -251,8 +251,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='hero',
         page_slug='services',
-        title='Послуги — Hero',
-        sidebar_title='Послуги — Hero',
+        title='Послуги — Верхній банер',
+        sidebar_title='Верхній банер',
         sidebar_icon='build',
         preview_url='/services/',
         visibility_key='hero_section_visible',
@@ -263,7 +263,7 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
         slug='catalog',
         page_slug='services',
         title='Послуги — Каталог',
-        sidebar_title='Послуги — Каталог',
+        sidebar_title='Каталог',
         sidebar_icon='list_alt',
         preview_url='/services/',
         visibility_key='catalog_section_visible',
@@ -277,8 +277,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='timeline',
         page_slug='services',
-        title='Послуги — How We Work',
-        sidebar_title='Послуги — Процес',
+        title='Послуги — Як ми працюємо',
+        sidebar_title='Як ми працюємо',
         sidebar_icon='timeline',
         preview_url='/services/',
         visibility_key='timeline_section_visible',
@@ -300,8 +300,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='spec_form',
         page_slug='services',
-        title='Послуги — Submit Specifications',
-        sidebar_title='Послуги — Форма',
+        title='Послуги — Форма специфікацій',
+        sidebar_title='Форма специфікацій',
         sidebar_icon='description',
         preview_url='/services/',
         visibility_key='spec_form_section_visible',
@@ -319,8 +319,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='hero',
         page_slug='portfolio',
-        title='Портфоліо — Hero',
-        sidebar_title='Портфоліо — Hero',
+        title='Портфоліо — Верхній банер',
+        sidebar_title='Верхній банер',
         sidebar_icon='collections',
         preview_url='/portfolio/',
         visibility_key='hero_section_visible',
@@ -330,8 +330,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='hero',
         page_slug='blog',
-        title='Блог — Hero',
-        sidebar_title='Блог — Hero',
+        title='Блог — Верхній банер',
+        sidebar_title='Верхній банер',
         sidebar_icon='article',
         preview_url='/blog/',
         visibility_key='hero_section_visible',
@@ -341,8 +341,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='hero',
         page_slug='faq',
-        title='FAQ — Hero',
-        sidebar_title='FAQ — Hero',
+        title='FAQ — Верхній банер',
+        sidebar_title='Верхній банер',
         sidebar_icon='help',
         preview_url='/faq/',
         visibility_key='hero_section_visible',
@@ -374,8 +374,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='content',
         page_slug='privacy',
-        title='Privacy Policy',
-        sidebar_title='Privacy Policy',
+        title='Політика конфіденційності',
+        sidebar_title='Конфіденційність',
         sidebar_icon='policy',
         preview_url='/privacy/',
         visibility_key='content_section_visible',
@@ -392,8 +392,8 @@ CONTENT_SECTIONS: tuple[ContentSection, ...] = (
     ContentSection(
         slug='content',
         page_slug='terms',
-        title='Terms of Service',
-        sidebar_title='Terms of Service',
+        title='Умови використання',
+        sidebar_title='Умови використання',
         sidebar_icon='gavel',
         preview_url='/terms/',
         visibility_key='content_section_visible',
@@ -431,6 +431,19 @@ def iter_section_blocks(section: ContentSection) -> Iterator[tuple[str, str]]:
     yield from section.blocks
 
 
+_SIDEBAR_GROUPS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    ('Головна', 'home', ('home',)),
+    ('Шапка і підвал', 'web', ('site',)),
+    ('Про нас', 'info', ('about',)),
+    ('Послуги', 'build', ('services',)),
+    ('Портфоліо', 'collections', ('portfolio',)),
+    ('Блог', 'article', ('blog',)),
+    ('FAQ', 'help', ('faq',)),
+    ('Контакти', 'call', ('contact',)),
+    ('Юридичні сторінки', 'gavel', ('privacy', 'terms')),
+)
+
+
 def build_content_sidebar_items() -> list[dict]:
     return [
         {
@@ -440,3 +453,27 @@ def build_content_sidebar_items() -> list[dict]:
         }
         for section in CONTENT_SECTIONS
     ]
+
+
+def build_content_sidebar_groups() -> list[dict]:
+    section_by_page: dict[str, list[dict]] = {}
+    for section in CONTENT_SECTIONS:
+        section_by_page.setdefault(section.page_slug, []).append({
+            'title': section.sidebar_title or section.title,
+            'icon': section.sidebar_icon,
+            'link': reverse_lazy(f'admin:pages_{section.admin_model_name}_changelist'),
+        })
+
+    groups: list[dict] = []
+    for group_title, group_icon, page_slugs in _SIDEBAR_GROUPS:
+        items: list[dict] = []
+        for page_slug in page_slugs:
+            items.extend(section_by_page.get(page_slug, []))
+        if items:
+            groups.append({
+                'title': group_title,
+                'collapsible': True,
+                'separator': False,
+                'items': items,
+            })
+    return groups

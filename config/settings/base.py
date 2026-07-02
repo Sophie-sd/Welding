@@ -3,7 +3,7 @@ from pathlib import Path
 import environ
 from django.urls import reverse_lazy
 
-from pages.site_content_registry import build_content_sidebar_items
+from pages.site_content_registry import build_content_sidebar_groups
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -162,11 +162,10 @@ UNFOLD = {
                     },
                 ],
             },
-            {
-                'title': 'Контент сторінок',
-                'separator': True,
-                'items': build_content_sidebar_items(),
-            },
+            *[
+                {**group, 'separator': idx == 0}
+                for idx, group in enumerate(build_content_sidebar_groups())
+            ],
             {
                 'title': 'Контент',
                 'separator': True,
