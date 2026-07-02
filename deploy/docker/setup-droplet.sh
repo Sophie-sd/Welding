@@ -18,12 +18,16 @@ if [[ -z "${REPO_URL}" ]]; then
 fi
 
 apt-get update
-apt-get install -y git ufw certbot
+apt-get install -y git ufw certbot curl
 
 ufw allow OpenSSH
 ufw allow 80/tcp
 ufw allow 443/tcp
 ufw --force enable
+
+echo "==> Stop legacy bare-metal stack (if present)"
+systemctl stop gunicorn nginx 2>/dev/null || true
+systemctl disable gunicorn nginx 2>/dev/null || true
 
 bash "$(dirname "$0")/install-docker.sh"
 
@@ -53,7 +57,7 @@ echo "  1. Point DNS A-records (@ and www) to this Droplet IP"
 echo "  2. Verify HTTP: curl -sf http://127.0.0.1/healthz/"
 echo "  3. SSL:"
 echo "       docker compose -f docker-compose.yml -f docker-compose.prod.yml stop nginx"
-echo "       certbot certonly --standalone -d khodakmetal.co.uk -d www.khodakmetal.co.uk"
+echo "       certbot certonly --standalone -d khodakmetal.com -d www.khodakmetal.com"
 echo "       # set USE_HTTPS=true in .env"
 echo "       bash deploy/docker/deploy.sh"
 echo "  4. Superuser:"

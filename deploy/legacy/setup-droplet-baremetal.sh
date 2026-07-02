@@ -69,6 +69,6 @@ systemctl restart nginx
 
 echo ""
 echo "Next steps:"
-echo "  1. certbot --nginx -d khodakmetal.co.uk -d www.khodakmetal.co.uk"
+echo "  1. certbot --nginx -d khodakmetal.com -d www.khodakmetal.com"
 echo "  2. sudo -u www-data bash -c 'cd ${APP_DIR} && .venv/bin/python manage.py createsuperuser'"
 echo "  3. Point DNS A-record to this server's IP"

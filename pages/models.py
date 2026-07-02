@@ -13,7 +13,7 @@ class SiteSettings(models.Model):
             'industrial projects in Poole and across the UK.'
         ),
     )
-    site_url = models.URLField(default='https://khodakmetal.co.uk')
+    site_url = models.URLField(default='https://khodakmetal.com')
     site_phone = models.CharField(max_length=30, default='+44 7704 039508')
     site_email = models.EmailField(default='khodakmetalsolution@gmail.com')
     site_address = models.CharField(

@@ -5,7 +5,7 @@ SITE_DESCRIPTION = (
     'Certified welding, metal structures, and fabrication for demanding '
     'industrial projects in Poole and across the UK.'
 )
-SITE_URL = 'https://khodakmetal.co.uk'
+SITE_URL = 'https://khodakmetal.com'
 SITE_PHONE = '+44 7704 039508'
 SITE_EMAIL = 'khodakmetalsolution@gmail.com'
 SITE_ADDRESS = '564 Ashley Rd, Poole BH14 0AG, United Kingdom'

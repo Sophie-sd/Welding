@@ -92,7 +92,7 @@ EMAIL_BACKEND = env(
     'EMAIL_BACKEND',
     default='django.core.mail.backends.console.EmailBackend',
 )
-DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='noreply@khodakmetal.co.uk')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='noreply@khodakmetal.com')
 QUOTE_NOTIFICATION_EMAIL = env(
     'QUOTE_NOTIFICATION_EMAIL',
     default='khodakmetalsolution@gmail.com',
