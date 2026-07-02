@@ -120,7 +120,28 @@ UNFOLD = {
     'SITE_TITLE': 'KHODAK — Адмінпанель',
     'SITE_HEADER': 'KHODAK Metal Solution',
     'SITE_SUBHEADER': 'Панель керування сайтом зварювальних послуг',
-    'SITE_ICON': '/static/images/favicon/favicon.svg',
+    'SITE_ICON': lambda request: request.build_absolute_uri('/static/images/favicon/favicon.svg'),
+    'SITE_FAVICONS': [
+        {
+            'rel': 'icon',
+            'type': 'image/svg+xml',
+            'href': lambda request: request.build_absolute_uri('/static/images/favicon/favicon.svg'),
+        },
+        {
+            'rel': 'icon',
+            'type': 'image/png',
+            'sizes': '32x32',
+            'href': lambda request: request.build_absolute_uri('/static/images/favicon/favicon-32.png'),
+        },
+        {
+            'rel': 'shortcut icon',
+            'href': lambda request: request.build_absolute_uri('/static/images/favicon/favicon.ico'),
+        },
+        {
+            'rel': 'apple-touch-icon',
+            'href': lambda request: request.build_absolute_uri('/static/images/favicon/apple-touch-icon.png'),
+        },
+    ],
     'SITE_URL': '/',
     'SHOW_VIEW_ON_SITE': True,
     'COLORS': {
