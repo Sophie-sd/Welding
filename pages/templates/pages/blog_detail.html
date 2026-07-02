@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static pages_media %}
+{% load static pages_media pages_content %}
 
 {% block content %}
 <section class="section">
@@ -14,90 +14,14 @@
         <img src="{% content_image post %}" alt="{{ post.title }} — KHODAK Metal Solution technical article" width="1200" height="675" fetchpriority="high">
       </figure>
 
-      {% if post.slug == 'tig-vs-mig-aluminum' %}
       <section class="article__section reveal">
-        <h2>Introduction: The Crucible of Structural Integrity</h2>
-        <p>When aluminium assemblies must perform under sustained load, the choice between TIG (GTAW) and MIG (GMAW) is not merely a preference — it is a metallurgical decision with direct consequences for joint strength, corrosion resistance, and service life.</p>
-        <p>At KHODAK Metal Solution, we evaluate each project against material grade, thickness, access constraints, and aesthetic requirements before specifying a welding process.</p>
-      </section>
-
-      <section class="article__section reveal">
-        <h2>Technical Breakdown</h2>
-        <p>The following comparison summarises key parameters our engineering team considers during specification review.</p>
-        <table class="compare-table">
-          <thead>
-            <tr>
-              <th scope="col">Parameter</th>
-              <th scope="col">TIG (GTAW)</th>
-              <th scope="col">MIG (GMAW)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Precision &amp; Control</td>
-              <td>Excellent — ideal for thin sections and critical root passes with independent amperage and foot-pedal control.</td>
-              <td>Good — faster deposition but less fine control on heat input for thin aluminium.</td>
-            </tr>
-            <tr>
-              <td>Speed &amp; Throughput</td>
-              <td>Slower — suited to high-value, low-volume precision work.</td>
-              <td>Faster — preferred for production runs and thicker plate assemblies.</td>
-            </tr>
-            <tr>
-              <td>Material Thickness</td>
-              <td>0.5mm – 6mm aluminium with superior cosmetic finish.</td>
-              <td>3mm+ aluminium where speed outweighs cosmetic requirements.</td>
-            </tr>
-            <tr>
-              <td>Aesthetic Finish</td>
-              <td>Superior — uniform bead profile, minimal spatter, no slag.</td>
-              <td>Acceptable — may require post-weld cleanup on visible joints.</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section class="article__section reveal">
-        <h2>Case Study Snapshot: High-Stress Aluminum Truss</h2>
-        <div class="case-study">
-          <p>A marine facility required an aluminium truss assembly exposed to salt-spray conditions. TIG welding with 5356 filler was specified to maintain corrosion resistance at every joint. Full penetration was verified by dye penetrant inspection.</p>
-          <a href="{% url 'portfolio' %}" class="service-card__link blog-inline-link">View Full Portfolio Entry →</a>
-        </div>
-      </section>
-
-      <section class="article__section reveal">
-        <h2>Industrial Best Practices</h2>
-        <p>Regardless of process selection, these protocols are non-negotiable on every KHODAK project.</p>
-        <div class="best-practices">
-          <div class="best-practice">
-            <div class="best-practice__icon" aria-hidden="true">⚙</div>
-            <div>
-              <h3 class="best-practice__title">Surface Preparation</h3>
-              <p class="best-practice__text">Remove oxide layer within 30 minutes of welding. Use stainless steel wire brush dedicated to aluminium only.</p>
-            </div>
-          </div>
-          <div class="best-practice">
-            <div class="best-practice__icon" aria-hidden="true">{ }</div>
-            <div>
-              <h3 class="best-practice__title">Gas Selection</h3>
-              <p class="best-practice__text">100% argon for TIG up to 6mm. Argon-helium blends for thicker sections requiring increased heat input.</p>
-            </div>
-          </div>
-          <div class="best-practice">
-            <div class="best-practice__icon" aria-hidden="true">°</div>
-            <div>
-              <h3 class="best-practice__title">Thermal Management</h3>
-              <p class="best-practice__text">Inter-pass temperature monitoring prevents distortion and loss of temper in heat-treated alloys.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      {% else %}
-      <section class="article__section reveal">
+        {% if post.body %}
+        {{ post.body|safe }}
+        {% else %}
         <p class="article__fallback">{{ post.excerpt }}</p>
         <p>Our engineering team publishes detailed technical guidance on welding processes, structural standards, and fabrication best practices. Contact us for project-specific advice.</p>
+        {% endif %}
       </section>
-      {% endif %}
     </article>
 
     <aside class="article-sidebar">

@@ -1,115 +1,125 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static pages_content %}
 
 {% block extra_head %}
-<link rel="preload" as="image" href="{% static 'images/hero-home.png' %}">
+{% block_plain 'home' 'hero_image' as hero_image_path %}
+<link rel="preload" as="image" href="{% static hero_image_path|default:'images/hero-home.png' %}">
 {% endblock %}
 
 {% block content %}
+{% section_visible 'home' 'hero_section_visible' as show_hero %}
+{% if show_hero %}
 <section class="hero hero--image">
   <div class="hero__bg">
-    <img src="{% static 'images/hero-home.png' %}" alt="Skilled welder at work with sparks — professional welding services Poole UK" width="1376" height="768" fetchpriority="high">
+    {% block_image 'home' 'hero_image' fallback_static='images/hero-home.png' alt='' %}
   </div>
   <div class="hero__overlay" aria-hidden="true"></div>
   <div class="container hero__inner">
     <div class="hero__content reveal">
-      <h1 class="heading-display hero__title">Professional Welding Services in Poole</h1>
-      <p class="hero__text">Certified welding, metal structures, and fabrication for demanding industrial projects. Built for durability, engineered with precision.</p>
+      <h1 class="heading-display hero__title">{% block_plain 'home' 'hero_title' %}</h1>
+      <p class="hero__text">{% block_plain 'home' 'hero_text' %}</p>
       <div class="hero__actions">
-        <a href="{% url 'contact' %}" class="btn btn--primary" data-quote-open>Request a Quote</a>
+        <a href="{% url 'contact' %}" class="btn btn--primary" data-quote-open>{% block_plain 'home' 'hero_cta_primary' %}</a>
         <a href="tel:{{ site.SITE_PHONE|cut:' ' }}" class="btn btn--ghost">
           <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Call Now
+          {% block_plain 'home' 'hero_cta_secondary' %}
         </a>
       </div>
     </div>
   </div>
 </section>
+{% endif %}
 
+{% section_visible 'home' 'value_grid_section_visible' as show_value_grid %}
+{% if show_value_grid %}
 <section class="section value-grid">
   <div class="container">
     <header class="value-grid__header reveal">
-      <h2 class="heading-lg value-grid__title">Structural Integrity Guaranteed</h2>
+      <h2 class="heading-lg value-grid__title">{% block_plain 'home' 'value_grid_title' %}</h2>
     </header>
     <div class="value-grid__cards">
       <article class="value-card value-card--featured reveal">
         <div class="value-card__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
         </div>
-        <span class="value-card__num">01 // Expertise</span>
-        <h3 class="value-card__title">Certified Specialists</h3>
-        <p class="prose">AWS D1.1 certified welders with coded qualifications across TIG, MIG, and electrode processes for structural and precision work.</p>
+        <span class="value-card__num">{% block_plain 'home' 'value_card_1_num' %}</span>
+        <h3 class="value-card__title">{% block_plain 'home' 'value_card_1_title' %}</h3>
+        <p class="prose">{% block_plain 'home' 'value_card_1_text' %}</p>
       </article>
       <article class="value-card reveal" style="--reveal-delay: 80ms">
         <div class="value-card__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
         </div>
-        <span class="value-card__num">02 // Capability</span>
-        <h3 class="value-card__title">Industrial Equipment</h3>
+        <span class="value-card__num">{% block_plain 'home' 'value_card_2_num' %}</span>
+        <h3 class="value-card__title">{% block_plain 'home' 'value_card_2_title' %}</h3>
       </article>
       <article class="value-card reveal" style="--reveal-delay: 160ms">
         <div class="value-card__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
         </div>
-        <span class="value-card__num">03 // Speed</span>
-        <h3 class="value-card__title">Fast Response</h3>
+        <span class="value-card__num">{% block_plain 'home' 'value_card_3_num' %}</span>
+        <h3 class="value-card__title">{% block_plain 'home' 'value_card_3_title' %}</h3>
       </article>
       <article class="value-card reveal" style="--reveal-delay: 240ms">
         <div class="value-card__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
-        <span class="value-card__num">04 // Assurance</span>
-        <h3 class="value-card__title">Quality Guarantee</h3>
+        <span class="value-card__num">{% block_plain 'home' 'value_card_4_num' %}</span>
+        <h3 class="value-card__title">{% block_plain 'home' 'value_card_4_title' %}</h3>
       </article>
       <article class="value-card reveal" style="--reveal-delay: 320ms">
         <div class="value-card__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         </div>
-        <span class="value-card__num">05 // Transparency</span>
-        <h3 class="value-card__title">Transparent Pricing</h3>
+        <span class="value-card__num">{% block_plain 'home' 'value_card_5_num' %}</span>
+        <h3 class="value-card__title">{% block_plain 'home' 'value_card_5_title' %}</h3>
       </article>
     </div>
   </div>
 </section>
+{% endif %}
 
+{% section_visible 'home' 'showcase_section_visible' as show_showcase %}
+{% if show_showcase %}
 <section class="section">
   <div class="container">
     <header class="showcase__header reveal">
       <div class="showcase__header-text">
-        <h2 class="heading-lg">Engineering Showcase</h2>
+        <h2 class="heading-lg">{% block_plain 'home' 'showcase_title' %}</h2>
       </div>
-      <a href="{% url 'portfolio' %}" class="showcase__link">View All Projects →</a>
+      <a href="{% url 'portfolio' %}" class="showcase__link">{% block_plain 'home' 'showcase_link_text' %}</a>
     </header>
     <div class="showcase__grid">
       <article class="project-card reveal">
         <a href="{% url 'portfolio' %}" class="project-card__link">
           <div class="project-card__image">
-            <img src="{% static 'images/project-frame.png' %}" alt="Heavy industrial steel frame installation — structural welding Poole" width="800" height="600" loading="lazy">
+            {% block_image 'home' 'showcase_card_1_image' fallback_static='images/project-frame.png' alt='' %}
             <div class="project-card__overlay" aria-hidden="true">
-              <span class="project-card__view-btn">View Project</span>
+              <span class="project-card__view-btn">{% block_plain 'home' 'showcase_view_btn' %}</span>
             </div>
           </div>
           <div class="project-card__body">
-            <p class="project-card__category">Structural Installation</p>
-            <h3 class="project-card__title">Heavy Industrial Frame</h3>
+            <p class="project-card__category">{% block_plain 'home' 'showcase_card_1_category' %}</p>
+            <h3 class="project-card__title">{% block_plain 'home' 'showcase_card_1_title' %}</h3>
           </div>
         </a>
       </article>
       <article class="project-card reveal" style="--reveal-delay: 120ms">
         <a href="{% url 'portfolio' %}" class="project-card__link">
           <div class="project-card__image">
-            <img src="{% static 'images/project-tig.png' %}" alt="Stainless steel TIG weld joint — precision welding UK" width="800" height="600" loading="lazy">
+            {% block_image 'home' 'showcase_card_2_image' fallback_static='images/project-tig.png' alt='' %}
             <div class="project-card__overlay" aria-hidden="true">
-              <span class="project-card__view-btn">View Project</span>
+              <span class="project-card__view-btn">{% block_plain 'home' 'showcase_view_btn' %}</span>
             </div>
           </div>
           <div class="project-card__body">
-            <p class="project-card__category">Precision Welding</p>
-            <h3 class="project-card__title">Stainless Steel TIG Joint</h3>
+            <p class="project-card__category">{% block_plain 'home' 'showcase_card_2_category' %}</p>
+            <h3 class="project-card__title">{% block_plain 'home' 'showcase_card_2_title' %}</h3>
           </div>
         </a>
       </article>
     </div>
   </div>
 </section>
+{% endif %}
 {% endblock %}

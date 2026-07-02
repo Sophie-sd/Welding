@@ -1,126 +1,17 @@
 {% extends 'base.html' %}
+{% load pages_content %}
 
 {% block content %}
+{% section_visible 'privacy' 'content_section_visible' as show_privacy %}
+{% if show_privacy %}
 <section class="section">
   <div class="container legal-content reveal">
     {% url 'home' as back_url %}
     {% include 'partials/back_link.html' with back_label='Back to Home' %}
-    <h1 class="heading-lg section-title section-title--block">Privacy Policy</h1>
-    <p class="legal-content__updated">Last updated: 26 June 2026</p>
-    <p>
-      {{ site.SITE_NAME }} (“we”, “us”, “our”) respects your privacy and is committed to protecting
-      your personal data. This Privacy Policy explains how we collect, use, store, and protect
-      information when you visit <a href="{{ site.SITE_URL }}">{{ site.SITE_URL }}</a>, submit an
-      enquiry, request a quotation, or otherwise interact with us.
-    </p>
-
-    <h2>Data Controller</h2>
-    <p>
-      The data controller responsible for your personal data is {{ site.SITE_NAME }},
-      {{ site.SITE_ADDRESS }}. For privacy enquiries, contact us at
-      <a href="mailto:{{ site.SITE_EMAIL }}">{{ site.SITE_EMAIL }}</a> or
-      <a href="tel:{{ site.SITE_PHONE|cut:' ' }}">{{ site.SITE_PHONE }}</a>.
-    </p>
-
-    <h2>Information We Collect</h2>
-    <p>We may collect and process the following categories of personal data:</p>
-    <ul>
-      <li><strong>Identity and contact data:</strong> name, company name, job title, phone number, email address, and postal address.</li>
-      <li><strong>Project and enquiry data:</strong> service requirements, project descriptions, site location, uploaded drawings, CAD files, photographs, and messages you send through our forms.</li>
-      <li><strong>Technical and usage data:</strong> IP address, browser type, device information, pages viewed, referral source, and approximate location derived from IP data.</li>
-      <li><strong>Communication records:</strong> emails, phone calls, and messages relating to quotations, contracts, and project delivery.</li>
-    </ul>
-    <p>We do not intentionally collect special category data unless you voluntarily provide it and we have a lawful basis to process it.</p>
-
-    <h2>How We Use Your Information</h2>
-    <p>We use personal data to:</p>
-    <ul>
-      <li>respond to enquiries and provide quotations;</li>
-      <li>deliver welding, fabrication, and installation services;</li>
-      <li>manage contracts, invoicing, and customer support;</li>
-      <li>maintain health, safety, and quality records required for our work;</li>
-      <li>improve our website, services, and customer experience;</li>
-      <li>comply with legal, regulatory, and insurance obligations.</li>
-    </ul>
-    <p>We do not sell your personal data to third parties.</p>
-
-    <h2>Legal Basis for Processing</h2>
-    <p>Under UK GDPR, we rely on one or more of the following lawful bases:</p>
-    <ul>
-      <li><strong>Contract:</strong> processing necessary to provide services you request or before entering into a contract.</li>
-      <li><strong>Legitimate interests:</strong> operating and improving our business, responding to enquiries, and maintaining site security, provided your rights are not overridden.</li>
-      <li><strong>Consent:</strong> where you have agreed to marketing communications or optional cookies.</li>
-      <li><strong>Legal obligation:</strong> where processing is required by UK law, tax rules, or regulatory requirements.</li>
-    </ul>
-
-    <h2>Sharing Your Information</h2>
-    <p>We may share personal data with trusted third parties where necessary, including:</p>
-    <ul>
-      <li>hosting, email, and IT service providers;</li>
-      <li>accountants, insurers, and professional advisers;</li>
-      <li>subcontractors or specialist partners involved in delivering your project;</li>
-      <li>regulators, courts, or law enforcement where required by law.</li>
-    </ul>
-    <p>All third parties are required to process data securely and only for specified purposes.</p>
-
-    <h2>International Transfers</h2>
-    <p>
-      We primarily store and process data within the United Kingdom. If data is transferred outside
-      the UK, we ensure appropriate safeguards are in place in accordance with applicable data
-      protection law.
-    </p>
-
-    <h2>Data Retention</h2>
-    <p>
-      Enquiry and quotation records are typically retained for up to 24 months unless a business
-      relationship is established. Contract, project, and financial records are retained for the
-      period required by UK law, insurance requirements, and industry standards. When data is no
-      longer needed, it is securely deleted or anonymised.
-    </p>
-
-    <h2>Security</h2>
-    <p>
-      We implement appropriate technical and organisational measures to protect personal data
-      against unauthorised access, loss, misuse, or alteration. No online transmission or storage
-      system is completely secure, but we review our security practices regularly.
-    </p>
-
-    <h2>Your Rights</h2>
-    <p>Under UK data protection law, you may have the right to:</p>
-    <ul>
-      <li>request access to your personal data;</li>
-      <li>request correction of inaccurate data;</li>
-      <li>request erasure in certain circumstances;</li>
-      <li>restrict or object to processing in certain circumstances;</li>
-      <li>request data portability where applicable;</li>
-      <li>withdraw consent where processing is based on consent;</li>
-      <li>lodge a complaint with the Information Commissioner’s Office (ICO).</li>
-    </ul>
-    <p>
-      To exercise your rights, contact
-      <a href="mailto:{{ site.SITE_EMAIL }}">{{ site.SITE_EMAIL }}</a>. We may need to verify
-      your identity before responding.
-    </p>
-
-    <h2>Cookies</h2>
-    <p>
-      We use essential cookies required for website functionality and may use analytics cookies to
-      understand how visitors use our site. You can manage or disable cookies through your browser
-      settings. Blocking essential cookies may affect site functionality.
-    </p>
-
-    <h2>Third-Party Links</h2>
-    <p>
-      Our website may contain links to third-party websites. We are not responsible for the privacy
-      practices of those sites and encourage you to review their policies separately.
-    </p>
-
-    <h2>Changes to This Policy</h2>
-    <p>
-      We may update this Privacy Policy from time to time. The “Last updated” date at the top of
-      this page will indicate when changes were made. Continued use of our website after changes
-      are published constitutes acceptance of the updated policy.
-    </p>
+    <h1 class="heading-lg section-title section-title--block">{% block_plain 'privacy' 'privacy_title' %}</h1>
+    <p class="legal-content__updated">{% block_plain 'privacy' 'privacy_updated' %}</p>
+    <div class="legal-content__body">{% render_block 'privacy' 'privacy_body' %}</div>
   </div>
 </section>
+{% endif %}
 {% endblock %}

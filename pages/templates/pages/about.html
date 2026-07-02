@@ -1,64 +1,63 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static pages_content %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/components/about.css' %}">
 {% endblock %}
 
 {% block content %}
-{% include 'partials/page_hero.html' with eyebrow='About Us' title='Engineering Integrity. Since 2014.' lead='Built on precision, reliability, and heavy-duty performance — structural excellence from bespoke fabrication to on-site installation across the UK.' image='images/hero-about.png' image_alt='Metal fabrication workshop — KHODAK Metal Solution engineering team' show_cta=True preload=True %}
+{% include 'partials/page_hero.html' with cms_page='about' visibility_key='hero_section_visible' show_cta=True preload=True %}
 
+{% section_visible 'about' 'story_section_visible' as show_story %}
+{% if show_story %}
 <section class="section">
   <div class="container">
     <div class="about-story reveal">
       <header class="about-story__intro">
-        <p class="eyebrow eyebrow--bar">Our Story</p>
-        <h2 class="heading-lg">The Structural Foundation</h2>
+        <p class="eyebrow eyebrow--bar">{% block_plain 'about' 'story_eyebrow' %}</p>
+        <h2 class="heading-lg">{% block_plain 'about' 'story_title' %}</h2>
       </header>
-
       <div class="about-story__columns">
-        <div class="about-story__col">
-          <p>What began as a specialised welding shop in Poole has evolved into a leading structural engineering contractor serving clients across the United Kingdom. Our growth reflects a commitment to measurable quality — every joint inspected, every frame aligned to blueprint tolerance.</p>
-        </div>
-        <div class="about-story__col">
-          <p>Today we operate a fully equipped fabrication facility with CNC cutting, heavy lifting capacity, and coded welding teams certified to AWS D1.1 and ISO 9001 standards. From first drawing review to final sign-off, each project follows documented procedures and traceable inspection records.</p>
-        </div>
-        <div class="about-story__col">
-          <p>We partner with architects, main contractors, and industrial operators on structural steelwork, bespoke metalwork, and on-site installation nationwide. Whether the brief is a single fabrication run or a multi-phase build programme, our engineers scope, quote, and deliver with the same rigour applied on day one.</p>
-        </div>
+        <div class="about-story__col"><p>{% block_plain 'about' 'story_col_1' %}</p></div>
+        <div class="about-story__col"><p>{% block_plain 'about' 'story_col_2' %}</p></div>
+        <div class="about-story__col"><p>{% block_plain 'about' 'story_col_3' %}</p></div>
       </div>
     </div>
   </div>
 </section>
+{% endif %}
 
+{% section_visible 'about' 'imperatives_section_visible' as show_imperatives %}
+{% if show_imperatives %}
 <section class="section section--alt">
   <div class="container">
     <header class="imperatives__header reveal">
-      <h2 class="heading-lg section-title">Core Imperatives</h2>
+      <h2 class="heading-lg section-title">{% block_plain 'about' 'imperatives_title' %}</h2>
     </header>
     <div class="imperatives__grid">
       <article class="imperative-card reveal">
         <div class="imperative-card__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
         </div>
-        <h3 class="imperative-card__title">Precision Engineering</h3>
-        <p class="imperative-card__text">Micrometer-level accuracy on every cut, weld, and assembly — measured against original blueprint specifications.</p>
+        <h3 class="imperative-card__title">{% block_plain 'about' 'imperative_1_title' %}</h3>
+        <p class="imperative-card__text">{% block_plain 'about' 'imperative_1_text' %}</p>
       </article>
       <article class="imperative-card reveal" style="--reveal-delay: 100ms">
         <div class="imperative-card__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
-        <h3 class="imperative-card__title">Certified Safety</h3>
-        <p class="imperative-card__text">International safety protocols enforced on every site, with full stress testing and documentation for structural compliance.</p>
+        <h3 class="imperative-card__title">{% block_plain 'about' 'imperative_2_title' %}</h3>
+        <p class="imperative-card__text">{% block_plain 'about' 'imperative_2_text' %}</p>
       </article>
       <article class="imperative-card reveal" style="--reveal-delay: 200ms">
         <div class="imperative-card__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
         </div>
-        <h3 class="imperative-card__title">Premium Craftsmanship</h3>
-        <p class="imperative-card__text">Industrial strength meets refined finish — welds that perform under load and meet the highest aesthetic standards.</p>
+        <h3 class="imperative-card__title">{% block_plain 'about' 'imperative_3_title' %}</h3>
+        <p class="imperative-card__text">{% block_plain 'about' 'imperative_3_text' %}</p>
       </article>
     </div>
   </div>
 </section>
+{% endif %}
 {% endblock %}

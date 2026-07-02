@@ -1,8 +1,22 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static pages_content %}
 
 {% block content %}
-{% include 'partials/page_hero.html' with eyebrow='Services' title=service.title lead=service.short image='images/tig-weld.png' image_alt='Professional metal fabrication — KHODAK Metal Solution' show_cta=True cta_service=service.slug preload=True %}
+<section class="section">
+  <div class="container page-hero">
+    <div class="page-hero__lead reveal">
+      <p class="eyebrow eyebrow--bar">Services</p>
+      <h1 class="heading-display">{{ service.title }}</h1>
+      <p class="prose">{{ service.short }}</p>
+      <div class="page-hero__actions">
+        <a href="{% url 'contact' %}?service={{ service.slug }}" class="btn btn--primary" data-quote-open data-service="{{ service.slug }}">Request a Quote</a>
+      </div>
+    </div>
+    <figure class="page-hero__image reveal">
+      {% block_image 'services' 'default_hero_image' fallback_static='images/tig-weld.png' alt='' %}
+    </figure>
+  </div>
+</section>
 
 <section class="section section--alt">
   <div class="container">
@@ -10,6 +24,9 @@
     {% include 'partials/back_link.html' with back_label='Back to Services' %}
 
     <div class="prose reveal">
+      {% if service.body %}
+      {{ service.body|safe }}
+      {% else %}
       <h2 class="heading-md">What We Deliver</h2>
       <p>KHODAK Metal Solution provides professional {{ service.title|lower }} for industrial, commercial, and residential clients across the United Kingdom. Every project begins with a detailed specification review and ends with documented quality assurance.</p>
       <p>Our coded welding teams work to AWS D1.1 standards with full traceability on materials, procedures, and inspection records. Whether you need workshop fabrication or on-site execution, we mobilise with the right equipment and certified personnel.</p>
@@ -19,6 +36,7 @@
 
       <h2 class="heading-md service-detail__section-title">Request a Quote</h2>
       <p>Submit your project specifications and our engineering team will respond within one business day.</p>
+      {% endif %}
       <a href="{% url 'contact' %}?service={{ service.slug }}" class="btn btn--primary service-detail__cta" data-quote-open data-service="{{ service.slug }}">Request a Quote</a>
     </div>
   </div>

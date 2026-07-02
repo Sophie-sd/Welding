@@ -6,8 +6,20 @@ from django.urls import reverse
 from .forms import QuoteForm
 from .models import BlogPost, Service, SiteSettings
 from .services import notify_quote_request
+from .utils.block_render import get_block_text
 
 BLOG_POSTS_PER_PAGE = 3
+
+
+def _page_meta(page: str, defaults: dict[str, str]) -> dict[str, str]:
+    return {
+        'meta_title': get_block_text(page, 'meta_title', fallback=defaults['meta_title']),
+        'meta_description': get_block_text(
+            page,
+            'meta_description',
+            fallback=defaults['meta_description'],
+        ),
+    }
 
 
 def _blog_page(request):
@@ -26,33 +38,33 @@ def _blog_page(request):
 
 
 def home(request):
-    return render(request, 'pages/home.html', {
+    return render(request, 'pages/home.html', _page_meta('home', {
         'meta_title': 'Professional Welding Services in Poole',
         'meta_description': (
             'Certified welding, metal structures, and fabrication for demanding '
             'industrial projects. Request a quote from KHODAK Metal Solution.'
         ),
-    })
+    }))
 
 
 def about(request):
-    return render(request, 'pages/about.html', {
+    return render(request, 'pages/about.html', _page_meta('about', {
         'meta_title': 'About Us — Engineering Integrity Since 2014',
         'meta_description': (
             'KHODAK Metal Solution delivers structural excellence across critical '
             'industrial sectors. Precision engineering, certified safety, premium craftsmanship.'
         ),
-    })
+    }))
 
 
 def services_list(request):
-    return render(request, 'pages/services.html', {
+    return render(request, 'pages/services.html', _page_meta('services', {
         'meta_title': 'Welding & Fabrication Services',
         'meta_description': (
             'Precision engineering and heavy-duty execution. Welding, structure '
             'installation, manufacturing, TIG, electrode welding, and metal repair.'
         ),
-    })
+    }))
 
 
 def service_detail(request, slug):
@@ -65,13 +77,13 @@ def service_detail(request, slug):
 
 
 def portfolio(request):
-    return render(request, 'pages/portfolio.html', {
+    return render(request, 'pages/portfolio.html', _page_meta('portfolio', {
         'meta_title': 'Our Work — Engineering Portfolio',
         'meta_description': (
             'A showcase of structural integrity and precision engineering. '
             'Explore industrial, commercial, and residential metal fabrication projects.'
         ),
-    })
+    }))
 
 
 def blog_list(request):
@@ -79,11 +91,13 @@ def blog_list(request):
     context = {
         'posts': page_obj.object_list,
         'page_obj': page_obj,
-        'meta_title': 'Engineering Insights & Welding Technologies',
-        'meta_description': (
-            'Expert guides on structural integrity, precision welding techniques, '
-            'and industrial fabrication standards from the KHODAK engineering team.'
-        ),
+        **_page_meta('blog', {
+            'meta_title': 'Engineering Insights & Welding Technologies',
+            'meta_description': (
+                'Expert guides on structural integrity, precision welding techniques, '
+                'and industrial fabrication standards from the KHODAK engineering team.'
+            ),
+        }),
     }
 
     if request.htmx:
@@ -104,23 +118,23 @@ def blog_detail(request, slug):
 
 
 def faq(request):
-    return render(request, 'pages/faq.html', {
+    return render(request, 'pages/faq.html', _page_meta('faq', {
         'meta_title': 'Frequently Asked Questions',
         'meta_description': (
             'Answers to common questions about welding certifications, project types, '
             'response times, and service areas from KHODAK Metal Solution.'
         ),
-    })
+    }))
 
 
 def contact(request):
-    return render(request, 'pages/contact.html', {
+    return render(request, 'pages/contact.html', _page_meta('contact', {
         'meta_title': 'Contact — Request a Quote',
         'meta_description': (
             'Get in touch with KHODAK Metal Solution. Submit project specifications '
             'or call our Poole workshop for professional welding services.'
         ),
-    })
+    }))
 
 
 def quote_submit(request):
@@ -156,11 +170,13 @@ def quote_submit(request):
         return render(request, 'partials/quote_form.html', context, status=422)
 
     return render(request, 'pages/contact.html', {
-        'meta_title': 'Contact — Request a Quote',
-        'meta_description': (
-            'Get in touch with KHODAK Metal Solution. Submit project specifications '
-            'or call our Poole workshop for professional welding services.'
-        ),
+        **_page_meta('contact', {
+            'meta_title': 'Contact — Request a Quote',
+            'meta_description': (
+                'Get in touch with KHODAK Metal Solution. Submit project specifications '
+                'or call our Poole workshop for professional welding services.'
+            ),
+        }),
         'quote_form': form,
     })
 
@@ -174,23 +190,23 @@ def thank_you(request):
 
 
 def privacy(request):
-    return render(request, 'pages/privacy.html', {
+    return render(request, 'pages/privacy.html', _page_meta('privacy', {
         'meta_title': 'Privacy Policy',
         'meta_description': (
             'How KHODAK Metal Solution collects, uses, and protects your personal data '
             'under UK GDPR when you use our website or submit an enquiry.'
         ),
-    })
+    }))
 
 
 def terms(request):
-    return render(request, 'pages/terms.html', {
+    return render(request, 'pages/terms.html', _page_meta('terms', {
         'meta_title': 'Terms of Service',
         'meta_description': (
             'Terms of service for using the KHODAK Metal Solution website and engaging '
             'our welding, fabrication, and installation services in the UK.'
         ),
-    })
+    }))
 
 
 def robots_txt(request):

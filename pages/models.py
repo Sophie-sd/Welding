@@ -185,3 +185,185 @@ class QuoteRequest(models.Model):
 
     def __str__(self):
         return f'{self.name} — {self.created_at:%Y-%m-%d}'
+
+
+class SiteBlock(models.Model):
+    class Page(models.TextChoices):
+        HOME = 'home', 'Головна'
+        ABOUT = 'about', 'Про нас'
+        SERVICES = 'services', 'Послуги'
+        PORTFOLIO = 'portfolio', 'Портфоліо'
+        BLOG = 'blog', 'Блог'
+        FAQ = 'faq', 'FAQ'
+        CONTACT = 'contact', 'Контакти'
+        PRIVACY = 'privacy', 'Privacy'
+        TERMS = 'terms', 'Terms'
+        SITE = 'site', 'Сайт'
+
+    class ContentType(models.TextChoices):
+        TEXT = 'text', 'Текст'
+        IMAGE = 'image', 'Фото'
+
+    page = models.CharField(max_length=32, choices=Page.choices)
+    key = models.CharField(max_length=64)
+    label = models.CharField(max_length=128)
+    content_type = models.CharField(
+        max_length=16,
+        choices=ContentType.choices,
+        default=ContentType.TEXT,
+    )
+    text_html = models.TextField(blank=True)
+    image = models.ImageField(upload_to='blocks/', blank=True)
+    sort_order = models.PositiveSmallIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['page', 'sort_order', 'key']
+        verbose_name = 'CMS блок'
+        verbose_name_plural = 'CMS блоки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['page', 'key'],
+                name='unique_site_block_page_key',
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.page}.{self.key}'
+
+    @property
+    def cache_key(self) -> str:
+        return f'{self.page}.{self.key}'
+
+
+class HomeHeroSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Головна — Hero'
+        verbose_name_plural = 'Головна — Hero'
+
+
+class HomeValueGridSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Головна — Переваги'
+        verbose_name_plural = 'Головна — Переваги'
+
+
+class HomeShowcaseSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Головна — Showcase'
+        verbose_name_plural = 'Головна — Showcase'
+
+
+class SiteHeaderSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Шапка сайту'
+        verbose_name_plural = 'Шапка сайту'
+
+
+class SiteFooterSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Підвал сайту'
+        verbose_name_plural = 'Підвал сайту'
+
+
+class SiteQuoteModalSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Модальне вікно заявки'
+        verbose_name_plural = 'Модальне вікно заявки'
+
+
+class AboutHeroSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Про нас — Hero'
+        verbose_name_plural = 'Про нас — Hero'
+
+
+class AboutStorySettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Про нас — Історія'
+        verbose_name_plural = 'Про нас — Історія'
+
+
+class AboutImperativesSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Про нас — Імперативи'
+        verbose_name_plural = 'Про нас — Імперативи'
+
+
+class ServicesHeroSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Послуги — Hero'
+        verbose_name_plural = 'Послуги — Hero'
+
+
+class ServicesCatalogSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Послуги — Каталог'
+        verbose_name_plural = 'Послуги — Каталог'
+
+
+class ServicesTimelineSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Послуги — Процес'
+        verbose_name_plural = 'Послуги — Процес'
+
+
+class ServicesSpecFormSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Послуги — Форма'
+        verbose_name_plural = 'Послуги — Форма'
+
+
+class PortfolioHeroSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Портфоліо — Hero'
+        verbose_name_plural = 'Портфоліо — Hero'
+
+
+class BlogHeroSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Блог — Hero'
+        verbose_name_plural = 'Блог — Hero'
+
+
+class FaqHeroSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'FAQ — Hero'
+        verbose_name_plural = 'FAQ — Hero'
+
+
+class ContactPageSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Контакти'
+        verbose_name_plural = 'Контакти'
+
+
+class PrivacyPageSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Privacy Policy'
+        verbose_name_plural = 'Privacy Policy'
+
+
+class TermsPageSettings(SiteSettings):
+    class Meta:
+        proxy = True
+        verbose_name = 'Terms of Service'
+        verbose_name_plural = 'Terms of Service'

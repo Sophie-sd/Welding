@@ -1,23 +1,25 @@
 {% extends 'base.html' %}
-{% load static quote_form_tags %}
+{% load static quote_form_tags pages_content %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/components/contact.css' %}">
 {% endblock %}
 
 {% block content %}
+{% section_visible 'contact' 'page_section_visible' as show_contact %}
+{% if show_contact %}
 <section class="contact-page">
   <div class="container contact-page__container">
     <header class="contact-page__intro reveal">
-      <p class="eyebrow eyebrow--bar">Get in Touch</p>
-      <h1 class="heading-display contact-page__title">Contact Our Workshop.</h1>
-      <p class="prose contact-page__lead">Submit project specifications or reach our Poole workshop. We respond within one business day.</p>
+      <p class="eyebrow eyebrow--bar">{% block_plain 'contact' 'contact_eyebrow' %}</p>
+      <h1 class="heading-display contact-page__title">{% block_plain 'contact' 'contact_title' %}</h1>
+      <p class="prose contact-page__lead">{% block_plain 'contact' 'contact_lead' %}</p>
     </header>
 
     <div class="contact-page__grid">
       <figure class="contact-glass contact-glass--media reveal">
-        <img src="{% static 'images/hero-contact.png' %}" alt="Project specification review at KHODAK Metal Solution — contact our workshop" width="800" height="600" loading="lazy">
-        <figcaption class="contact-glass__note">Certified teams · AWS D1.1 · ISO 9001</figcaption>
+        {% block_image 'contact' 'hero_image' fallback_static='images/hero-contact.png' alt='' %}
+        <figcaption class="contact-glass__note">{% block_plain 'contact' 'contact_figcaption' %}</figcaption>
       </figure>
 
       <aside class="contact-glass contact-glass--info reveal" style="--reveal-delay: 80ms">
@@ -37,7 +39,7 @@
           </div>
           <div class="contact-info__item">
             <dt class="contact-info__label">Hours</dt>
-            <dd class="contact-info__value">Mon–Fri 07:00–17:00</dd>
+            <dd class="contact-info__value">{% block_plain 'contact' 'contact_hours' %}</dd>
           </div>
         </dl>
       </aside>
@@ -49,6 +51,7 @@
     </div>
   </div>
 </section>
+{% endif %}
 {% endblock %}
 
 {% block schema %}

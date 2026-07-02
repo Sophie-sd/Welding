@@ -3,6 +3,8 @@ from pathlib import Path
 import environ
 from django.urls import reverse_lazy
 
+from pages.site_content_registry import build_content_sidebar_items
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env(
@@ -158,6 +160,11 @@ UNFOLD = {
                         'link': reverse_lazy('admin:pages_sitesettings_changelist'),
                     },
                 ],
+            },
+            {
+                'title': 'Контент сторінок',
+                'separator': True,
+                'items': build_content_sidebar_items(),
             },
             {
                 'title': 'Контент',

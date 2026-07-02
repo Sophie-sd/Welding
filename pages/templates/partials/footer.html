@@ -1,19 +1,13 @@
-{% load static %}
+{% load pages_content %}
+{% section_visible 'site' 'footer_section_visible' as show_footer %}
+{% if show_footer %}
 <footer class="site-footer">
   <div class="container site-footer__grid">
     <div class="site-footer__brand">
       <a href="{% url 'home' %}" class="site-footer__logo" aria-label="{{ site.SITE_NAME }} home">
-        <img
-          class="site-footer__logo-img"
-          src="{% static 'images/logo-khodak.png' %}"
-          alt="{{ site.SITE_NAME }}"
-          width="540"
-          height="117"
-          loading="lazy"
-          decoding="async"
-        >
+        {% block_image 'site' 'footer_logo_image' fallback_static='images/logo-khodak.png' css_class='site-footer__logo-img' alt=site.SITE_NAME %}
       </a>
-      <p class="site-footer__tagline">Professional welding and fabrication services in Poole, Dorset.</p>
+      <p class="site-footer__tagline">{% block_plain 'site' 'footer_tagline' %}</p>
       <address class="site-footer__contact">
         <p>{{ site.SITE_ADDRESS }}</p>
         <p><a href="tel:{{ site.SITE_PHONE|cut:' ' }}">{{ site.SITE_PHONE }}</a></p>
@@ -45,6 +39,7 @@
     </div>
   </div>
   <div class="container site-footer__bottom">
-    © {{ site.SITE_YEAR }} {{ site.SITE_NAME }}. Built for Durability.
+    © {{ site.SITE_YEAR }} {{ site.SITE_NAME }}. {% block_plain 'site' 'footer_bottom_text' %}
   </div>
 </footer>
+{% endif %}

@@ -1,13 +1,15 @@
 from django.contrib import admin
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.utils.html import format_html
 from tinymce.widgets import TinyMCE
 from unfold.admin import ModelAdmin
 
+from .admin_site_content_proxies import register_site_content_section_admins
+from .admin_utils import ReadableUnfoldFieldsMixin, SingletonModelAdminMixin
 from .models import BlogPost, FAQItem, PortfolioItem, QuoteRequest, Service, SiteSettings
 
 TINYMCE_FIELDS = frozenset({'body', 'answer'})
+
+register_site_content_section_admins()
 
 
 def new_quote_requests_badge(request):
@@ -16,7 +18,7 @@ def new_quote_requests_badge(request):
 
 
 @admin.register(SiteSettings)
-class SiteSettingsAdmin(ModelAdmin):
+class SiteSettingsAdmin(ReadableUnfoldFieldsMixin, SingletonModelAdminMixin, ModelAdmin):
     fieldsets = (
         ('Бренд', {
             'fields': (
@@ -37,12 +39,6 @@ class SiteSettingsAdmin(ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
-
-    def changelist_view(self, request, extra_context=None):
-        obj, _ = SiteSettings.objects.get_or_create(pk=1)
-        return HttpResponseRedirect(
-            reverse('admin:pages_sitesettings_change', args=[obj.pk]),
-        )
 
 
 @admin.register(Service)

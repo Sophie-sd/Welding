@@ -1,35 +1,46 @@
-{% load static %}
+{% load static pages_content %}
 <header class="site-header" id="site-header">
   <div class="site-header__bar">
     <div class="container site-header__inner">
       <a href="{% url 'home' %}" class="site-header__logo" aria-label="{{ site.SITE_NAME }} home">
-        <img
-          class="site-header__logo-img"
-          src="{% static 'images/logo-khodak.png' %}"
-          alt="{{ site.SITE_NAME }}"
-          width="320"
-          height="69"
-          decoding="async"
-        >
+        {% block_image 'site' 'header_logo_image' fallback_static='images/logo-khodak.png' css_class='site-header__logo-img' alt=site.SITE_NAME %}
       </a>
 
       <nav class="site-header__nav" aria-label="Main navigation">
         <ul class="site-header__nav-list">
-          <li><a href="{% url 'services' %}" class="site-header__nav-link{% if '/services' in current_path %} site-header__nav-link--active{% endif %}">Services</a></li>
-          <li><a href="{% url 'portfolio' %}" class="site-header__nav-link{% if current_path == '/portfolio/' %} site-header__nav-link--active{% endif %}">Portfolio</a></li>
-          <li><a href="{% url 'about' %}" class="site-header__nav-link{% if current_path == '/about/' %} site-header__nav-link--active{% endif %}">About</a></li>
-          <li><a href="{% url 'blog' %}" class="site-header__nav-link{% if '/blog' in current_path %} site-header__nav-link--active{% endif %}">Blog</a></li>
-          <li><a href="{% url 'contact' %}" class="site-header__nav-link{% if current_path == '/contact/' %} site-header__nav-link--active{% endif %}">Contact</a></li>
+          {% section_visible 'site' 'header_nav_services_visible' as show_services_nav %}
+          {% if show_services_nav %}
+          <li><a href="{% url 'services' %}" class="site-header__nav-link{% if '/services' in current_path %} site-header__nav-link--active{% endif %}">{% block_plain 'site' 'header_nav_services_label' %}</a></li>
+          {% endif %}
+          {% section_visible 'site' 'header_nav_portfolio_visible' as show_portfolio_nav %}
+          {% if show_portfolio_nav %}
+          <li><a href="{% url 'portfolio' %}" class="site-header__nav-link{% if current_path == '/portfolio/' %} site-header__nav-link--active{% endif %}">{% block_plain 'site' 'header_nav_portfolio_label' %}</a></li>
+          {% endif %}
+          {% section_visible 'site' 'header_nav_about_visible' as show_about_nav %}
+          {% if show_about_nav %}
+          <li><a href="{% url 'about' %}" class="site-header__nav-link{% if current_path == '/about/' %} site-header__nav-link--active{% endif %}">{% block_plain 'site' 'header_nav_about_label' %}</a></li>
+          {% endif %}
+          {% section_visible 'site' 'header_nav_blog_visible' as show_blog_nav %}
+          {% if show_blog_nav %}
+          <li><a href="{% url 'blog' %}" class="site-header__nav-link{% if '/blog' in current_path %} site-header__nav-link--active{% endif %}">{% block_plain 'site' 'header_nav_blog_label' %}</a></li>
+          {% endif %}
+          {% section_visible 'site' 'header_nav_contact_visible' as show_contact_nav %}
+          {% if show_contact_nav %}
+          <li><a href="{% url 'contact' %}" class="site-header__nav-link{% if current_path == '/contact/' %} site-header__nav-link--active{% endif %}">{% block_plain 'site' 'header_nav_contact_label' %}</a></li>
+          {% endif %}
         </ul>
       </nav>
 
       <div class="site-header__actions">
+        {% section_visible 'site' 'header_cta_visible' as show_header_cta %}
+        {% if show_header_cta %}
         <a href="{% url 'contact' %}" class="btn {% if current_path == '/' %}btn--header-quote{% else %}btn--secondary{% endif %} site-header__cta" data-quote-open>
-          Request a Quote
+          {% block_plain 'site' 'header_cta_text' %}
           {% if current_path == '/' %}
           <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           {% endif %}
         </a>
+        {% endif %}
         <button class="site-header__burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav" data-menu-toggle>
           <span></span><span></span><span></span>
         </button>
@@ -43,11 +54,11 @@
 <nav id="mobile-nav" class="site-header__mobile-nav" aria-label="Mobile navigation" data-mobile-nav>
   <div class="site-header__mobile-body">
     <ul class="site-header__mobile-list">
-      <li><a href="{% url 'services' %}" class="site-header__mobile-link">Services</a></li>
-      <li><a href="{% url 'portfolio' %}" class="site-header__mobile-link">Portfolio</a></li>
-      <li><a href="{% url 'about' %}" class="site-header__mobile-link">About</a></li>
-      <li><a href="{% url 'blog' %}" class="site-header__mobile-link">Blog</a></li>
-      <li><a href="{% url 'contact' %}" class="site-header__mobile-link">Contact</a></li>
+      {% if show_services_nav %}<li><a href="{% url 'services' %}" class="site-header__mobile-link">{% block_plain 'site' 'header_nav_services_label' %}</a></li>{% endif %}
+      {% if show_portfolio_nav %}<li><a href="{% url 'portfolio' %}" class="site-header__mobile-link">{% block_plain 'site' 'header_nav_portfolio_label' %}</a></li>{% endif %}
+      {% if show_about_nav %}<li><a href="{% url 'about' %}" class="site-header__mobile-link">{% block_plain 'site' 'header_nav_about_label' %}</a></li>{% endif %}
+      {% if show_blog_nav %}<li><a href="{% url 'blog' %}" class="site-header__mobile-link">{% block_plain 'site' 'header_nav_blog_label' %}</a></li>{% endif %}
+      {% if show_contact_nav %}<li><a href="{% url 'contact' %}" class="site-header__mobile-link">{% block_plain 'site' 'header_nav_contact_label' %}</a></li>{% endif %}
     </ul>
 
     <ul class="site-header__mobile-secondary">
@@ -64,18 +75,23 @@
 </nav>
 
 <nav class="site-header__mobile-dock" aria-label="Quick links" data-mobile-dock>
+  {% if show_services_nav %}
   <a href="{% url 'services' %}" class="site-header__mobile-dock-item">
     <svg class="site-header__mobile-dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
     </svg>
-    <span class="site-header__mobile-dock-label">Services</span>
+    <span class="site-header__mobile-dock-label">{% block_plain 'site' 'header_nav_services_label' %}</span>
   </a>
+  {% endif %}
+  {% if show_contact_nav %}
   <a href="{% url 'contact' %}" class="site-header__mobile-dock-item">
     <svg class="site-header__mobile-dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
     </svg>
-    <span class="site-header__mobile-dock-label">Contact</span>
+    <span class="site-header__mobile-dock-label">{% block_plain 'site' 'header_nav_contact_label' %}</span>
   </a>
+  {% endif %}
+  {% if show_header_cta %}
   <a href="{% url 'contact' %}" class="site-header__mobile-dock-item site-header__mobile-dock-item--accent" data-quote-open>
     <svg class="site-header__mobile-dock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -83,6 +99,7 @@
       <line x1="16" y1="13" x2="8" y2="13"/>
       <line x1="16" y1="17" x2="8" y2="17"/>
     </svg>
-    <span class="site-header__mobile-dock-label">Request a Quote</span>
+    <span class="site-header__mobile-dock-label">{% block_plain 'site' 'header_cta_text' %}</span>
   </a>
+  {% endif %}
 </nav>

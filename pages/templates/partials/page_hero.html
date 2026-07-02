@@ -1,4 +1,33 @@
-{% load static %}
+{% load static pages_content %}
+{% if cms_page %}
+{% section_visible cms_page visibility_key as show_section %}
+{% if show_section %}
+<section class="section">
+  <div class="container page-hero">
+    <div class="page-hero__lead reveal">
+      <p class="eyebrow eyebrow--bar">{% block_plain cms_page 'hero_eyebrow' %}</p>
+      <h1 class="heading-display">{% block_plain cms_page 'hero_title' %}</h1>
+      <p class="prose">{% block_plain cms_page 'hero_lead' %}</p>
+      {% if show_cta %}
+      <div class="page-hero__actions">
+        <a href="{% if cta_url %}{{ cta_url }}{% else %}{% url 'contact' %}{% endif %}" class="btn btn--primary"{% if not cta_url %} data-quote-open{% if cta_service %} data-service="{{ cta_service }}"{% endif %}{% endif %}>{{ cta_label|default:"Request a Quote" }}</a>
+      </div>
+      {% endif %}
+      {% if show_trust %}
+      <ul class="page-hero__trust" aria-label="Certifications">
+        <li>AWS D1.1</li>
+        <li>ISO 9001</li>
+        <li>UK-wide</li>
+      </ul>
+      {% endif %}
+    </div>
+    <figure class="page-hero__image reveal">
+      {% block_image cms_page 'hero_image' fallback_static='images/hero-about.png' alt='' %}
+    </figure>
+  </div>
+</section>
+{% endif %}
+{% else %}
 <section class="section">
   <div class="container page-hero">
     <div class="page-hero__lead reveal">
@@ -25,3 +54,4 @@
     {% endif %}
   </div>
 </section>
+{% endif %}

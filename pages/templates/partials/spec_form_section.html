@@ -1,22 +1,20 @@
-{% load static quote_form_tags %}
+{% load static quote_form_tags pages_content %}
+{% section_visible 'services' 'spec_form_section_visible' as show_spec_form %}
+{% if show_spec_form %}
 <section class="spec-form-section">
   <div class="spec-form-block reveal">
     <div class="spec-form-block__media" aria-hidden="true">
-      {% if bg_image %}
-      <img src="{% static bg_image %}" alt="" width="800" height="600" loading="lazy">
-      {% else %}
-      <img src="{% static 'images/hero-contact.png' %}" alt="" width="800" height="600" loading="lazy">
-      {% endif %}
+      {% block_image 'services' 'spec_form_bg_image' fallback_static='images/workshop.png' alt='' %}
     </div>
     <div class="spec-form-block__overlay" aria-hidden="true"></div>
     <div class="container spec-form spec-form-block__content">
       <div class="spec-form__intro reveal">
-        <h2 class="heading-lg spec-form__title section-title">Submit Specifications</h2>
-        <p class="prose">Transmit your project details for engineering review. Our team responds within one business day with a scope assessment and quote.</p>
+        <h2 class="heading-lg spec-form__title section-title">{% block_plain 'services' 'spec_form_title' %}</h2>
+        <p class="prose">{% block_plain 'services' 'spec_form_intro' %}</p>
         <div class="spec-form__checks">
-          <div class="spec-form__check">ISO 9001 Quality Management</div>
-          <div class="spec-form__check">AWS D1.1 Structural Welding</div>
-          <div class="spec-form__check">Coded Welder Qualifications</div>
+          <div class="spec-form__check">{% block_plain 'services' 'spec_form_check_1' %}</div>
+          <div class="spec-form__check">{% block_plain 'services' 'spec_form_check_2' %}</div>
+          <div class="spec-form__check">{% block_plain 'services' 'spec_form_check_3' %}</div>
         </div>
       </div>
       <div class="spec-form__form reveal">
@@ -25,3 +23,4 @@
     </div>
   </div>
 </section>
+{% endif %}

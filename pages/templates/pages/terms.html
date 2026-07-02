@@ -1,155 +1,17 @@
 {% extends 'base.html' %}
+{% load pages_content %}
 
 {% block content %}
+{% section_visible 'terms' 'content_section_visible' as show_terms %}
+{% if show_terms %}
 <section class="section">
   <div class="container legal-content reveal">
     {% url 'home' as back_url %}
     {% include 'partials/back_link.html' with back_label='Back to Home' %}
-    <h1 class="heading-lg section-title section-title--block">Terms of Service</h1>
-    <p class="legal-content__updated">Last updated: 26 June 2026</p>
-    <p>
-      These Terms of Service (“Terms”) govern your use of the {{ site.SITE_NAME }} website at
-      <a href="{{ site.SITE_URL }}">{{ site.SITE_URL }}</a> and set out the general conditions
-      under which we provide welding, metal fabrication, structural installation, and related
-      services. By using our website or engaging our services, you agree to these Terms.
-    </p>
-
-    <h2>About Us</h2>
-    <p>
-      {{ site.SITE_NAME }} is a structural engineering and metal fabrication contractor based in
-      Poole, Dorset, serving clients across the United Kingdom. Our registered contact details are:
-      {{ site.SITE_ADDRESS }} · <a href="tel:{{ site.SITE_PHONE|cut:' ' }}">{{ site.SITE_PHONE }}</a>
-      · <a href="mailto:{{ site.SITE_EMAIL }}">{{ site.SITE_EMAIL }}</a>.
-    </p>
-
-    <h2>Website Use</h2>
-    <p>You agree to use our website lawfully and not to:</p>
-    <ul>
-      <li>attempt unauthorised access to our systems or data;</li>
-      <li>submit false, misleading, or malicious information;</li>
-      <li>copy, scrape, or reproduce website content without written permission;</li>
-      <li>interfere with the security or performance of the website.</li>
-    </ul>
-    <p>We may suspend or restrict access where we reasonably believe these Terms have been breached.</p>
-
-    <h2>Services and Specifications</h2>
-    <p>
-      Information on this website, including service descriptions, portfolio examples, and technical
-      summaries, is provided for general guidance only. It does not constitute a binding offer,
-      engineering certification, or guarantee of suitability for a specific application.
-    </p>
-    <p>
-      All welding, fabrication, and installation work is subject to confirmed specifications,
-      applicable standards, site conditions, and formal acceptance of our quotation or contract.
-    </p>
-
-    <h2>Quotations and Orders</h2>
-    <ul>
-      <li>Written quotations are valid for 30 days from the date of issue unless otherwise stated.</li>
-      <li>Final pricing depends on confirmed drawings, materials, access, programme, and site-specific requirements.</li>
-      <li>An order is accepted only when confirmed in writing by both parties or when work is expressly authorised to commence.</li>
-      <li>We reserve the right to decline work that falls outside our capabilities, certification scope, or safety requirements.</li>
-    </ul>
-
-    <h2>Client Responsibilities</h2>
-    <p>Where applicable, you agree to:</p>
-    <ul>
-      <li>provide accurate project information, drawings, and site access;</li>
-      <li>obtain necessary permissions, permits, and third-party approvals;</li>
-      <li>ensure a safe working environment in accordance with applicable regulations;</li>
-      <li>make timely payments in accordance with agreed terms;</li>
-      <li>notify us promptly of any changes that may affect scope, cost, or programme.</li>
-    </ul>
-
-    <h2>Health, Safety, and Site Conditions</h2>
-    <p>
-      We operate in accordance with applicable UK health and safety legislation and maintain
-      documented procedures for workshop and on-site work. Variations in site conditions,
-      concealed defects, or client-directed changes may affect delivery times and cost.
-    </p>
-
-    <h2>Payment Terms</h2>
-    <p>
-      Payment terms will be stated in your quotation or contract. Unless otherwise agreed, invoices
-      are payable within 14 days of issue. We may charge interest on overdue sums in accordance with
-      the Late Payment of Commercial Debts (Interest) Act 1998.
-    </p>
-
-    <h2>Warranties and Quality</h2>
-    <p>
-      We warrant that services will be performed with reasonable skill and care and in accordance
-      with agreed specifications and applicable standards. Any warranty claim must be reported
-      promptly in writing with sufficient detail to allow inspection and assessment.
-    </p>
-    <p>
-      Warranty does not cover defects arising from misuse, unauthorised modification, normal wear,
-      client-supplied materials, or conditions outside our control.
-    </p>
-
-    <h2>Limitation of Liability</h2>
-    <p>
-      Nothing in these Terms excludes or limits liability for death or personal injury caused by
-      negligence, fraud, or any other liability that cannot be excluded under UK law.
-    </p>
-    <p>
-      Subject to the above, our total liability arising from any contract or website use is limited
-      to the amount paid by you for the specific project giving rise to the claim, except where a
-      higher limit is required by law or expressly agreed in writing.
-    </p>
-    <p>
-      We shall not be liable for indirect or consequential loss, including loss of profit, business
-      interruption, or loss of anticipated savings, except where such loss cannot be excluded by law.
-    </p>
-
-    <h2>Insurance</h2>
-    <p>
-      We maintain appropriate public liability and professional indemnity insurance for our
-      operations. Certificates of insurance are available on request for contracted projects.
-    </p>
-
-    <h2>Intellectual Property</h2>
-    <p>
-      All website content, including text, images, branding, layout, and design, is owned by or
-      licensed to {{ site.SITE_NAME }} and is protected by intellectual property laws. You may not
-      reproduce or distribute website content without our prior written consent.
-    </p>
-    <p>
-      Unless otherwise agreed, we retain rights in our methodologies, templates, and pre-existing
-      know-how. Project-specific drawings and deliverables will be addressed in the project contract.
-    </p>
-
-    <h2>Confidentiality</h2>
-    <p>
-      We treat client project information as confidential and use it only for the purpose of
-      delivering services, unless disclosure is required by law or authorised by you.
-    </p>
-
-    <h2>Cancellation and Variations</h2>
-    <p>
-      Cancellation, postponement, or variation of ordered work must be agreed in writing. You may be
-      liable for costs already incurred, committed materials, and reasonable demobilisation expenses.
-    </p>
-
-    <h2>Force Majeure</h2>
-    <p>
-      We are not liable for delay or failure to perform caused by events beyond our reasonable
-      control, including severe weather, utility failures, supply chain disruption, industrial
-      action, or regulatory restrictions.
-    </p>
-
-    <h2>Governing Law</h2>
-    <p>
-      These Terms are governed by the laws of England and Wales. The courts of England and Wales
-      shall have exclusive jurisdiction over any dispute arising from these Terms or use of our
-      website, without prejudice to mandatory consumer rights where applicable.
-    </p>
-
-    <h2>Contact</h2>
-    <p>
-      Questions about these Terms should be sent to
-      <a href="mailto:{{ site.SITE_EMAIL }}">{{ site.SITE_EMAIL }}</a> or
-      <a href="{% url 'contact' %}">contact us online</a>.
-    </p>
+    <h1 class="heading-lg section-title section-title--block">{% block_plain 'terms' 'terms_title' %}</h1>
+    <p class="legal-content__updated">{% block_plain 'terms' 'terms_updated' %}</p>
+    <div class="legal-content__body">{% render_block 'terms' 'terms_body' %}</div>
   </div>
 </section>
+{% endif %}
 {% endblock %}

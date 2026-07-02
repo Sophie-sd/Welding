@@ -1,4 +1,9 @@
-from .models import BlogPost, FAQItem, PortfolioItem, Service, SiteSettings
+from django.core.cache import cache
+
+from .models import BlogPost, FAQItem, PortfolioItem, Service, SiteBlock, SiteSettings
+
+SITE_BLOCKS_CACHE_KEY = 'khodak_site_blocks_v1'
+SITE_BLOCKS_CACHE_TTL = 60
 
 
 class SiteContext:
@@ -60,8 +65,22 @@ class SiteContext:
         return BlogPost.objects.filter(is_published=True)
 
 
+def _load_site_blocks():
+    cached = cache.get(SITE_BLOCKS_CACHE_KEY)
+    if cached is not None:
+        return cached
+
+    blocks = {
+        block.cache_key: block
+        for block in SiteBlock.objects.filter(is_active=True)
+    }
+    cache.set(SITE_BLOCKS_CACHE_KEY, blocks, SITE_BLOCKS_CACHE_TTL)
+    return blocks
+
+
 def site_settings(request):
     return {
         'site': SiteContext(SiteSettings.load()),
+        'site_blocks': _load_site_blocks(),
         'current_path': request.path,
     }

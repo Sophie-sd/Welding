@@ -1,0 +1,81 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+{{ block.super }}
+{{ media }}
+<link rel="stylesheet" href="{% static 'css/admin/site_content.css' %}">
+<style>
+  .site-content-editor .form-row input[type="file"] {
+    background-color: var(--color-base-900, #111827);
+    border-color: var(--color-base-700, #374151);
+    color: var(--color-base-100, #f3f4f6);
+  }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="px-4">
+  <div class="container mb-6 mx-auto -my-3 lg:mb-12">
+    <ul class="flex flex-wrap">
+      <li class="text-font-subtle-light dark:text-font-subtle-dark">
+        <a href="{% url 'admin:index' %}">{% trans "Home" %}</a>
+        <span class="mx-2">›</span>
+      </li>
+      <li class="text-font-subtle-light dark:text-font-subtle-dark">
+        {{ title }}
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="site-content-editor px-4 pb-8">
+  <div class="site-content-editor__head">
+    <div>
+      <h1 class="text-font-important-light dark:text-font-important-dark text-xl font-semibold">{{ title }}</h1>
+      {% if section.description %}
+      <p class="text-font-subtle-light dark:text-font-subtle-dark mt-2">{{ section.description }}</p>
+      {% endif %}
+    </div>
+    {% if preview_url %}
+    <a href="{{ preview_url }}" target="_blank" rel="noopener" class="site-content-editor__preview">
+      Переглянути на сайті
+    </a>
+    {% endif %}
+  </div>
+
+  <form method="post" enctype="multipart/form-data" class="site-content-editor__form">
+    {% csrf_token %}
+
+    {% if 'section_visible' in form.fields %}
+    <fieldset class="site-content-editor__fieldset">
+      <legend class="site-content-editor__legend">Видимість</legend>
+      <div class="form-row">{{ form.section_visible.label_tag }} {{ form.section_visible }}</div>
+    </fieldset>
+    {% endif %}
+
+    <fieldset class="site-content-editor__fieldset">
+      <legend class="site-content-editor__legend">Контент секції</legend>
+      {% for field in form.visible_fields %}
+        {% if field.name != 'section_visible' %}
+        <div class="form-row site-content-editor__field">
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.errors %}
+          <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </fieldset>
+
+    <div class="site-content-editor__actions">
+      <button type="submit" class="border border-transparent bg-primary-600 text-white rounded-default px-4 py-2 font-medium hover:bg-primary-600/90">
+        Зберегти
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load pages_content %}
 
 {% block content %}
-{% include 'partials/page_hero.html' with eyebrow='Engineering Insights' title='Technical Articles & Welding Standards.' lead='Expert guides on structural integrity, precision welding techniques, and industrial fabrication standards.' image='images/workshop.png' image_alt='Metal fabrication workshop — KHODAK engineering blog' preload=True %}
+{% include 'partials/page_hero.html' with cms_page='blog' visibility_key='hero_section_visible' preload=True %}
 
 <section class="section section--alt">
   <div class="container">

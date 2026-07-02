@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static pages_content %}
 
 {% block content %}
-{% include 'partials/page_hero.html' with eyebrow='Support' title='Frequently Asked Questions.' lead='Answers to common questions about our welding services, certifications, and project process.' image='images/tig-weld.png' image_alt='Precision TIG welding — KHODAK Metal Solution FAQ' %}
+{% include 'partials/page_hero.html' with cms_page='faq' visibility_key='hero_section_visible' %}
 
 <section class="section section--alt">
   <div class="container">

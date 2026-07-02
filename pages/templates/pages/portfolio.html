@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-{% load static pages_media %}
+{% load pages_media pages_content %}
 
 {% block content %}
-{% include 'partials/page_hero.html' with eyebrow='Portfolio' title='Our Work.' lead='A showcase of structural integrity and precision engineering. From heavy industrial frameworks to meticulous residential repairs, explore the projects built to last.' image='images/project-frame.png' image_alt='Steel framework assembly — KHODAK Metal Solution portfolio project' preload=True %}
+{% include 'partials/page_hero.html' with cms_page='portfolio' visibility_key='hero_section_visible' preload=True %}
 
 <section class="section section--alt">
   <div class="container">
