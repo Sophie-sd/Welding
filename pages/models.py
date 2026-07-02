@@ -163,20 +163,26 @@ class QuoteRequest(models.Model):
         IN_PROGRESS = 'in_progress', 'В обробці'
         CLOSED = 'closed', 'Закрита'
 
-    name = models.CharField(max_length=80)
-    phone = models.CharField(max_length=30)
-    email = models.EmailField(blank=True)
+    name = models.CharField(max_length=80, verbose_name="ім'я")
+    phone = models.CharField(max_length=30, verbose_name='телефон')
+    email = models.EmailField(blank=True, verbose_name='email')
     service = models.ForeignKey(
         Service,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='quote_requests',
+        verbose_name='послуга',
     )
-    message = models.TextField(blank=True)
-    privacy_accepted = models.BooleanField(default=False)
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.NEW)
-    created_at = models.DateTimeField(auto_now_add=True)
+    message = models.TextField(blank=True, verbose_name='повідомлення')
+    privacy_accepted = models.BooleanField(default=False, verbose_name='згода на обробку даних')
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.NEW,
+        verbose_name='статус',
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='дата заявки')
 
     class Meta:
         ordering = ['-created_at']
@@ -239,8 +245,8 @@ class SiteBlock(models.Model):
 class HomeHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Головна — Hero'
-        verbose_name_plural = 'Головна — Hero'
+        verbose_name = 'Головна — Верхній банер'
+        verbose_name_plural = 'Головна — Верхній банер'
 
 
 class HomeValueGridSettings(SiteSettings):
@@ -253,8 +259,8 @@ class HomeValueGridSettings(SiteSettings):
 class HomeShowcaseSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Головна — Showcase'
-        verbose_name_plural = 'Головна — Showcase'
+        verbose_name = 'Головна — Проєкти'
+        verbose_name_plural = 'Головна — Проєкти'
 
 
 class SiteHeaderSettings(SiteSettings):
@@ -274,36 +280,36 @@ class SiteFooterSettings(SiteSettings):
 class SiteQuoteModalSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Модальне вікно заявки'
-        verbose_name_plural = 'Модальне вікно заявки'
+        verbose_name = 'Вікно заявки'
+        verbose_name_plural = 'Вікно заявки'
 
 
 class AboutHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Про нас — Hero'
-        verbose_name_plural = 'Про нас — Hero'
+        verbose_name = 'Про нас — Верхній банер'
+        verbose_name_plural = 'Про нас — Верхній банер'
 
 
 class AboutStorySettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Про нас — Історія'
-        verbose_name_plural = 'Про нас — Історія'
+        verbose_name = 'Про нас — Наша історія'
+        verbose_name_plural = 'Про нас — Наша історія'
 
 
 class AboutImperativesSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Про нас — Імперативи'
-        verbose_name_plural = 'Про нас — Імперативи'
+        verbose_name = 'Про нас — Цінності'
+        verbose_name_plural = 'Про нас — Цінності'
 
 
 class ServicesHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Послуги — Hero'
-        verbose_name_plural = 'Послуги — Hero'
+        verbose_name = 'Послуги — Верхній банер'
+        verbose_name_plural = 'Послуги — Верхній банер'
 
 
 class ServicesCatalogSettings(SiteSettings):
@@ -316,36 +322,36 @@ class ServicesCatalogSettings(SiteSettings):
 class ServicesTimelineSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Послуги — Процес'
-        verbose_name_plural = 'Послуги — Процес'
+        verbose_name = 'Послуги — Як ми працюємо'
+        verbose_name_plural = 'Послуги — Як ми працюємо'
 
 
 class ServicesSpecFormSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Послуги — Форма'
-        verbose_name_plural = 'Послуги — Форма'
+        verbose_name = 'Послуги — Форма специфікацій'
+        verbose_name_plural = 'Послуги — Форма специфікацій'
 
 
 class PortfolioHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Портфоліо — Hero'
-        verbose_name_plural = 'Портфоліо — Hero'
+        verbose_name = 'Портфоліо — Верхній банер'
+        verbose_name_plural = 'Портфоліо — Верхній банер'
 
 
 class BlogHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Блог — Hero'
-        verbose_name_plural = 'Блог — Hero'
+        verbose_name = 'Блог — Верхній банер'
+        verbose_name_plural = 'Блог — Верхній банер'
 
 
 class FaqHeroSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'FAQ — Hero'
-        verbose_name_plural = 'FAQ — Hero'
+        verbose_name = 'FAQ — Верхній банер'
+        verbose_name_plural = 'FAQ — Верхній банер'
 
 
 class ContactPageSettings(SiteSettings):
@@ -358,12 +364,12 @@ class ContactPageSettings(SiteSettings):
 class PrivacyPageSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Privacy Policy'
-        verbose_name_plural = 'Privacy Policy'
+        verbose_name = 'Політика конфіденційності'
+        verbose_name_plural = 'Політика конфіденційності'
 
 
 class TermsPageSettings(SiteSettings):
     class Meta:
         proxy = True
-        verbose_name = 'Terms of Service'
-        verbose_name_plural = 'Terms of Service'
+        verbose_name = 'Умови використання'
+        verbose_name_plural = 'Умови використання'

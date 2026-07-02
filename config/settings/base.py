@@ -198,7 +198,7 @@ UNFOLD = {
                 'items': [
                     {
                         'title': 'Заявки',
-                        'icon': 'inbox',
+                        'icon': 'mark_email_unread',
                         'link': reverse_lazy('admin:pages_quoterequest_changelist'),
                         'badge': 'pages.admin.new_quote_requests_badge',
                         'badge_variant': 'primary',
