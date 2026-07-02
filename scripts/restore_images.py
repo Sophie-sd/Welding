@@ -63,7 +63,7 @@ def crop_and_save(image, box, name, size):
 
 
 CARD_IMAGE_SIZE = (1600, 1200)
-CONSTRUCTION_FRAME_BOX = (0, 380, 1400, 873)
+INDUSTRIAL_FRAME_SOURCE = IMAGES_DIR / 'heavy-industrial-frame-source.png'
 
 
 def trim_content_margin(image, threshold=210):
@@ -141,12 +141,10 @@ def center_crop_to_ratio(image, target_w, target_h, anchor='center'):
     return image.crop(box).resize((target_w, target_h), Image.Resampling.LANCZOS)
 
 
-def construction_frame_source():
-    frame = BASE_DIR / '.tmp' / 'video-frames' / 'frame_006.jpg'
-    if not frame.exists():
-        raise FileNotFoundError(frame)
-    left, top, right, bottom = CONSTRUCTION_FRAME_BOX
-    return Image.open(frame).crop((left, top, right, bottom))
+def industrial_frame_source():
+    if not INDUSTRIAL_FRAME_SOURCE.exists():
+        raise FileNotFoundError(INDUSTRIAL_FRAME_SOURCE)
+    return Image.open(INDUSTRIAL_FRAME_SOURCE)
 
 
 def restore_hero_home():
@@ -157,8 +155,7 @@ def restore_hero_home():
 
 
 def restore_project_frame():
-    construction = construction_frame_source()
-    save_image(center_crop_to_ratio(construction.convert('RGB'), *CARD_IMAGE_SIZE), 'project-frame.png')
+    save_image(center_crop_to_ratio(industrial_frame_source().convert('RGB'), *CARD_IMAGE_SIZE), 'project-frame.png')
 
 
 def restore_project_tig():
@@ -171,12 +168,11 @@ def restore_project_tig():
 
 
 def restore_portfolio_images():
-    construction = construction_frame_source()
     portfolio_sources = {
-        'portfolio-omega.png': (construction, 'center'),
+        'portfolio-omega.png': (industrial_frame_source(), 'center'),
         'portfolio-nexus.png': (IMAGES_DIR / 'workshop.png', 'center'),
         'portfolio-bridge.png': (IMAGES_DIR / 'welder.png', 'top'),
-        'portfolio-residential.png': (IMAGES_DIR / 'hero-about.png', 'center'),
+        'portfolio-residential.png': (IMAGES_DIR / 'hero-contact.png', 'center'),
     }
     for name, (src, anchor) in portfolio_sources.items():
         img = src if isinstance(src, Image.Image) else Image.open(src)
@@ -200,11 +196,57 @@ def restore_tig_weld():
     src = ASSETS_DIR / '________________2026-06-26___17.54.40-d57bb8b4-4043-4279-a9d3-1a7030ba598e.png'
     if not src.exists():
         raise FileNotFoundError(src)
+    img = trim_content_margin(Image.open(src).convert('RGB'))
+    target_w = 1200
+    target_h = round(img.height * target_w / img.width)
+    img = img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+    save_image(crop_light_top_band(img), 'tig-weld.png')
+
+
+def restore_hero_about():
+    src = ASSETS_DIR / 'hero-about-new.png'
+    if not src.exists():
+        src = ASSETS_DIR / 'hero-about.png'
+    if not src.exists():
+        raise FileNotFoundError(src)
     img = Image.open(src).convert('RGB')
     target_w = 1200
     target_h = round(img.height * target_w / img.width)
     img = img.resize((target_w, target_h), Image.Resampling.LANCZOS)
-    save_image(img, 'tig-weld.png')
+    save_image(crop_light_top_band(img), 'hero-about.png')
+
+
+def restore_hero_faq():
+    src = ASSETS_DIR / 'hero-faq.png'
+    if not src.exists():
+        raise FileNotFoundError(src)
+    img = Image.open(src).convert('RGB')
+    target_w = 1200
+    target_h = round(img.height * target_w / img.width)
+    img = img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+    save_image(img, 'hero-faq.png')
+
+
+def restore_hero_portfolio():
+    src = ASSETS_DIR / 'hero-portfolio.png'
+    if not src.exists():
+        raise FileNotFoundError(src)
+    img = Image.open(src).convert('RGB')
+    target_w = 1200
+    target_h = round(img.height * target_w / img.width)
+    img = img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+    save_image(crop_light_top_band(img), 'hero-portfolio.png')
+
+
+def restore_hero_blog():
+    src = ASSETS_DIR / 'hero-blog.png'
+    if not src.exists():
+        raise FileNotFoundError(src)
+    img = Image.open(src).convert('RGB')
+    target_w = 1200
+    target_h = round(img.height * target_w / img.width)
+    img = img.resize((target_w, target_h), Image.Resampling.LANCZOS)
+    save_image(crop_light_top_band(img), 'hero-blog.png')
 
 
 def restore_blueprints():
@@ -216,7 +258,7 @@ def restore_blueprints():
     box = (int(w * 0.68), int(h * 0.34), int(w * 0.98), int(h * 0.58))
     cropped = img.crop(box)
     cropped = cropped.resize((1200, 750), Image.Resampling.LANCZOS)
-    save_image(cropped, 'blueprints.png')
+    save_image(crop_light_top_band(cropped), 'blueprints.png')
 
 
 def restore_from_screenshots():
@@ -227,10 +269,13 @@ def restore_from_screenshots():
 def main():
     IMAGES_DIR.mkdir(parents=True, exist_ok=True)
     restore_logo()
-    copy_asset('hero-about.png')
+    restore_hero_about()
     copy_asset('hero-contact.png')
     restore_workshop()
     restore_from_screenshots()
+    restore_hero_faq()
+    restore_hero_portfolio()
+    restore_hero_blog()
     restore_project_frame()
     restore_project_tig()
     restore_portfolio_images()

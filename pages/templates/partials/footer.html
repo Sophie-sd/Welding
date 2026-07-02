@@ -39,7 +39,18 @@
     </div>
   </div>
   <div class="container site-footer__bottom">
-    © {{ site.SITE_YEAR }} {{ site.SITE_NAME }}. {% block_plain 'site' 'footer_bottom_text' %}
+    <p class="site-footer__copyright">
+      © {{ site.SITE_YEAR }} {{ site.SITE_NAME }}. {% block_plain 'site' 'footer_bottom_text' %}
+    </p>
+    <p class="site-footer__credit">
+      Made by
+      <a
+        href="https://www.prometeylabs.com/"
+        class="site-footer__credit-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >PrometeyLabs</a>
+    </p>
   </div>
 </footer>
 {% endif %}

@@ -31,6 +31,7 @@ REQUIRED_IMAGES=(
     hero-about.png
     hero-contact.png
     project-frame.png
+    heavy-industrial-frame-source.png
     project-tig.png
     portfolio-omega.png
     portfolio-nexus.png
@@ -38,6 +39,9 @@ REQUIRED_IMAGES=(
     portfolio-residential.png
     workshop.png
     tig-weld.png
+    hero-faq.png
+    hero-portfolio.png
+    hero-blog.png
     welder.png
     blueprints.png
     placeholder.png

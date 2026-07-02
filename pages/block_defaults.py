@@ -191,7 +191,7 @@ BLOCK_DEFAULTS: dict[tuple[str, str], str] = {
     ),
     ('about', 'hero_image'): 'images/hero-about.png',
     ('about', 'hero_image_alt'): (
-        'Metal fabrication workshop — KHODAK Metal Solution engineering team'
+        'Structural engineer inspecting steel framework — KHODAK Metal Solution About Us'
     ),
     ('about', 'meta_title'): 'About Us — Engineering Integrity Since 2014',
     ('about', 'meta_description'): (
@@ -296,9 +296,9 @@ BLOCK_DEFAULTS: dict[tuple[str, str], str] = {
         'A showcase of structural integrity and precision engineering. From heavy industrial '
         'frameworks to meticulous residential repairs, explore the projects built to last.'
     ),
-    ('portfolio', 'hero_image'): 'images/project-frame.png',
+    ('portfolio', 'hero_image'): 'images/hero-portfolio.png',
     ('portfolio', 'hero_image_alt'): (
-        'Steel framework assembly — KHODAK Metal Solution portfolio project'
+        'Fabrication workshop with completed steel structures — KHODAK portfolio'
     ),
     ('portfolio', 'meta_title'): 'Our Work — Engineering Portfolio',
     ('portfolio', 'meta_description'): (
@@ -312,8 +312,10 @@ BLOCK_DEFAULTS: dict[tuple[str, str], str] = {
         'Expert guides on structural integrity, precision welding techniques, and '
         'industrial fabrication standards.'
     ),
-    ('blog', 'hero_image'): 'images/workshop.png',
-    ('blog', 'hero_image_alt'): 'Metal fabrication workshop — KHODAK engineering blog',
+    ('blog', 'hero_image'): 'images/hero-blog.png',
+    ('blog', 'hero_image_alt'): (
+        'Welding standards and technical blueprints — KHODAK engineering blog'
+    ),
     ('blog', 'meta_title'): 'Engineering Insights & Welding Technologies',
     ('blog', 'meta_description'): (
         'Expert guides on structural integrity, precision welding techniques, and '
@@ -326,8 +328,10 @@ BLOCK_DEFAULTS: dict[tuple[str, str], str] = {
         'Answers to common questions about our welding services, certifications, and '
         'project process.'
     ),
-    ('faq', 'hero_image'): 'images/tig-weld.png',
-    ('faq', 'hero_image_alt'): 'Precision TIG welding — KHODAK Metal Solution FAQ',
+    ('faq', 'hero_image'): 'images/hero-faq.png',
+    ('faq', 'hero_image_alt'): (
+        'Welding quality inspection — KHODAK Metal Solution FAQ and support'
+    ),
     ('faq', 'meta_title'): 'Frequently Asked Questions',
     ('faq', 'meta_description'): (
         'Answers to common questions about welding certifications, project types, '

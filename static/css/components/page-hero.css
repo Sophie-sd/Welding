@@ -41,8 +41,10 @@
 
 .page-hero__image {
   position: relative;
+  aspect-ratio: 4 / 3;
   border: 1px solid var(--color-border);
   overflow: hidden;
+  background: var(--color-bg-alt);
   transition: box-shadow 300ms ease, border-color 300ms ease;
 }
 
@@ -52,9 +54,11 @@
 }
 
 .page-hero__image img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 100%;
   object-fit: cover;
   object-position: center;
   transition: transform 600ms var(--ease-out);
@@ -85,10 +89,10 @@
     margin-inline: calc(-1 * var(--gutter-mobile));
     border-left: none;
     border-right: none;
+    aspect-ratio: 16 / 10;
   }
 
   .page-hero__image img {
-    aspect-ratio: 16 / 10;
     min-height: 14rem;
   }
 
