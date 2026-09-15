@@ -24,7 +24,7 @@
     {% include 'partials/back_link.html' with back_label='Back to Services' %}
 
     <div class="prose reveal">
-      {% if service.body %}
+      {% if service.body|has_richtext %}
       {{ service.body|safe }}
       {% else %}
       <h2 class="heading-md">What We Deliver</h2>

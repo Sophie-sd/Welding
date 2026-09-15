@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static pages_media pages_content %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    {% url 'portfolio' as back_url %}
+    {% include 'partials/back_link.html' with back_label='Back to Portfolio' %}
+
+    <article class="portfolio-detail reveal">
+      <p class="eyebrow eyebrow--bar">{{ item.get_category_display }}</p>
+      <h1 class="heading-display portfolio-detail__title">{{ item.title }}</h1>
+      <p class="portfolio-detail__meta">
+        <span>{{ item.location }}</span>
+        <span aria-hidden="true">·</span>
+        <span>{{ item.detail }}</span>
+      </p>
+
+      <figure class="portfolio-detail__hero">
+        <img src="{% content_image item %}" alt="{{ item.title }} — {{ item.location }} metal fabrication project" width="1600" height="1200" fetchpriority="high">
+      </figure>
+
+      <div class="prose portfolio-detail__body">
+        {% if item.body|has_richtext %}
+        {{ item.body|safe }}
+        {% else %}
+        <p>{{ item.title }} is a {{ item.get_category_display|lower }} fabrication project completed in {{ item.location }}. Our coded welding teams delivered {{ item.detail|lower }} with full material traceability and documented quality assurance.</p>
+        <p>Every portfolio project follows the same engineering discipline: specification review, controlled fabrication, dimensional inspection, and verified installation or delivery.</p>
+        {% endif %}
+      </div>
+
+      {% if item.gallery.exists %}
+      <div class="portfolio-gallery">
+        <h2 class="heading-md portfolio-gallery__title">Project Gallery</h2>
+        <div class="portfolio-gallery__grid">
+          {% for photo in item.gallery.all %}
+          <figure class="portfolio-gallery__item">
+            <img src="{{ photo.image.url }}" alt="{{ photo.alt_text|default:item.title }}" width="1200" height="900" loading="lazy">
+          </figure>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <a href="{% url 'contact' %}" class="btn btn--primary portfolio-detail__cta" data-quote-open>Request a Quote</a>
+    </article>
+
+    {% if related_items %}
+    <aside class="portfolio-related">
+      <h2 class="heading-md portfolio-related__heading">Related Projects</h2>
+      <div class="portfolio-grid portfolio-grid--related">
+        {% for related in related_items %}
+        <article class="portfolio-card reveal">
+          <a href="{% url 'portfolio_detail' related.slug %}" class="portfolio-card__link">
+            <div class="portfolio-card__image">
+              <img src="{% content_image related %}" alt="{{ related.title }}" width="1600" height="1200" loading="lazy">
+              <span class="portfolio-card__badge">{{ related.category }}</span>
+            </div>
+            <div class="portfolio-card__body">
+              <h3 class="portfolio-card__title">{{ related.title }}</h3>
+              <p class="portfolio-card__meta">
+                <span>{{ related.location }}</span>
+                <span aria-hidden="true">·</span>
+                <span>{{ related.detail }}</span>
+              </p>
+            </div>
+          </a>
+        </article>
+        {% endfor %}
+      </div>
+    </aside>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% block schema %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "{{ item.title }}",
+  "description": "{{ item.title }} — {{ item.location }}. {{ item.detail }}",
+  "url": "{{ site.SITE_URL }}/portfolio/{{ item.slug }}/",
+  "creator": {
+    "@type": "Organization",
+    "name": "{{ site.SITE_NAME }}"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.SITE_URL }}/"},
+    {"@type": "ListItem", "position": 2, "name": "Portfolio", "item": "{{ site.SITE_URL }}/portfolio/"},
+    {"@type": "ListItem", "position": 3, "name": "{{ item.title }}"}
+  ]
+}
+</script>
+{% endblock %}

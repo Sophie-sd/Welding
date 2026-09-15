@@ -49,6 +49,7 @@ class ImagePreviewMixin:
 
 class AdminImageWebpMixin:
     admin_image_profile = 'content'
+    admin_inline_image_field = 'image'
 
     def save_model(self, request, obj, form, change):
         uploaded = form.cleaned_data.get('image')
@@ -59,3 +60,23 @@ class AdminImageWebpMixin:
                 messages.error(request, str(exc))
                 return
         super().save_model(request, obj, form, change)
+
+    def save_formset(self, request, form, formset, change):
+        from django.core.files.uploadedfile import UploadedFile
+
+        for inline_form in formset.forms:
+            if not getattr(inline_form, 'cleaned_data', None):
+                continue
+            if inline_form.cleaned_data.get('DELETE'):
+                continue
+            uploaded = inline_form.cleaned_data.get(self.admin_inline_image_field)
+            if not isinstance(uploaded, UploadedFile):
+                continue
+            try:
+                processed = process_admin_image(uploaded, profile=self.admin_image_profile)
+                inline_form.cleaned_data[self.admin_inline_image_field] = processed
+                inline_form.instance.image = processed
+            except ImageUploadError as exc:
+                messages.error(request, str(exc))
+                return
+        super().save_formset(request, form, formset, change)

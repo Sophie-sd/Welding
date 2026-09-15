@@ -5,6 +5,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('healthz/', lambda request: HttpResponse('ok')),
+    path('tinymce/', include('tinymce.urls')),
     path('admin/', admin.site.urls),
     path('', include('pages.urls')),
 ]

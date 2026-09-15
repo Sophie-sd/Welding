@@ -17,7 +17,7 @@
           <span class="faq-item__icon" aria-hidden="true">{% if forloop.first %}−{% else %}+{% endif %}</span>
         </button>
         <div class="faq-item__panel"{% if forloop.first %} style="display: block"{% endif %}>
-          <p>{{ item.answer }}</p>
+          {{ item.answer|safe }}
         </div>
       </div>
       {% endfor %}
@@ -39,7 +39,7 @@
       "name": "{{ item.question }}",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "{{ item.answer }}"
+        "text": "{{ item.answer|striptags|escapejs }}"
       }
     }{% if not forloop.last %},{% endif %}
     {% endfor %}

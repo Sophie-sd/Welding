@@ -7,8 +7,14 @@ from pages.utils.block_render import (
     get_block_text,
     is_section_visible,
 )
+from pages.utils.richtext import has_richtext_content
 
 register = template.Library()
+
+
+@register.filter(name='has_richtext')
+def has_richtext(value):
+    return has_richtext_content(value)
 
 
 @register.simple_tag(takes_context=True)

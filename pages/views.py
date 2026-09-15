@@ -4,7 +4,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 
 from .forms import QuoteForm
-from .models import BlogPost, Service, SiteSettings
+from .models import BlogPost, PortfolioItem, Service, SiteSettings
 from .services import notify_quote_request
 from .utils.block_render import get_block_text
 
@@ -84,6 +84,27 @@ def portfolio(request):
             'Explore industrial, commercial, and residential metal fabrication projects.'
         ),
     }))
+
+
+def portfolio_detail(request, slug):
+    item = get_object_or_404(PortfolioItem, slug=slug, is_published=True)
+    related = list(
+        PortfolioItem.objects
+        .filter(is_published=True, category=item.category)
+        .exclude(pk=item.pk)[:2]
+    )
+    if len(related) < 2:
+        related = list(
+            PortfolioItem.objects
+            .filter(is_published=True)
+            .exclude(pk=item.pk)[:2]
+        )
+    return render(request, 'pages/portfolio_detail.html', {
+        'item': item,
+        'related_items': related,
+        'meta_title': f'{item.title} — Portfolio',
+        'meta_description': f'{item.title} — {item.location}. {item.detail}',
+    })
 
 
 def blog_list(request):
@@ -234,6 +255,8 @@ def sitemap_xml(request):
     ]
     for svc in Service.objects.filter(is_published=True):
         pages.append({'loc': f'/services/{svc.slug}/', 'priority': '0.7'})
+    for item in PortfolioItem.objects.filter(is_published=True):
+        pages.append({'loc': f'/portfolio/{item.slug}/', 'priority': '0.6'})
     for post in BlogPost.objects.filter(is_published=True):
         pages.append({'loc': f'/blog/{post.slug}/', 'priority': '0.6'})
     return TemplateResponse(

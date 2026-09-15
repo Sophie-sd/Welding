@@ -1,6 +1,6 @@
 from django.contrib import admin
 from tinymce.widgets import TinyMCE
-from unfold.admin import ModelAdmin
+from unfold.admin import ModelAdmin, TabularInline
 
 from .admin_site_content_proxies import register_site_content_section_admins
 from .admin_utils import (
@@ -10,7 +10,15 @@ from .admin_utils import (
     SingletonModelAdminMixin,
 )
 from .cms_field_hints import get_model_image_hint
-from .models import BlogPost, FAQItem, PortfolioItem, QuoteRequest, Service, SiteSettings
+from .models import (
+    BlogPost,
+    FAQItem,
+    PortfolioImage,
+    PortfolioItem,
+    QuoteRequest,
+    Service,
+    SiteSettings,
+)
 
 TINYMCE_FIELDS = frozenset({'body', 'answer'})
 
@@ -18,12 +26,14 @@ MODEL_FIELD_HELP = {
     'title': 'Заголовок. Не перевищуйте рекомендовану довжину для коректного відображення.',
     'short': 'Короткий опис послуги. Рекомендовано до 240 символів.',
     'excerpt': 'Короткий опис статті. Рекомендовано до 240 символів.',
+    'body': 'Повний опис. Відображається на окремій сторінці елемента.',
     'question': 'Питання FAQ. Максимум 255 символів.',
     'answer': 'Відповідь FAQ. Рекомендовано лаконічний текст до 600 символів.',
     'location': 'Локація проєкту. Максимум 120 символів.',
     'detail': 'Додаткова мітка проєкту. Максимум 120 символів.',
     'static_image': 'Імʼя файлу в static/images/ як резерв, якщо не завантажено media-зображення.',
     'image': get_model_image_hint(),
+    'alt_text': 'Короткий alt-текст для фото галереї (англійською).',
 }
 
 register_site_content_section_admins()
@@ -87,6 +97,14 @@ class ServiceAdmin(ModelAdmin):
         return apply_model_field_help(formfield, db_field.name)
 
 
+class PortfolioImageInline(TabularInline):
+    model = PortfolioImage
+    extra = 3
+    fields = ('image', 'alt_text', 'sort_order')
+    ordering = ('sort_order', 'pk')
+    tab = True
+
+
 @admin.register(PortfolioItem)
 class PortfolioItemAdmin(AdminImageWebpMixin, ImagePreviewMixin, ModelAdmin):
     list_display = (
@@ -101,12 +119,17 @@ class PortfolioItemAdmin(AdminImageWebpMixin, ImagePreviewMixin, ModelAdmin):
     list_filter = ('category', 'is_published')
     prepopulated_fields = {'slug': ('title',)}
     readonly_fields = ('get_image_preview',)
+    inlines = (PortfolioImageInline,)
     fieldsets = (
         ('Основне', {
-            'fields': ('title', 'slug', 'category', 'location', 'detail'),
+            'fields': ('title', 'slug', 'category', 'location', 'detail', 'body'),
         }),
         ('Зображення', {
             'fields': ('static_image', 'image', 'get_image_preview'),
+            'description': (
+                'Image — обкладинка картки та головне фото сторінки проєкту. '
+                'Додаткові фото додайте в блоці «Фото портфоліо» нижче.'
+            ),
         }),
         ('Публікація', {
             'fields': ('sort_order', 'is_published'),
@@ -114,6 +137,8 @@ class PortfolioItemAdmin(AdminImageWebpMixin, ImagePreviewMixin, ModelAdmin):
     )
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if db_field.name in TINYMCE_FIELDS:
+            kwargs['widget'] = TinyMCE()
         formfield = super().formfield_for_dbfield(db_field, request, **kwargs)
         return apply_model_field_help(formfield, db_field.name)
 

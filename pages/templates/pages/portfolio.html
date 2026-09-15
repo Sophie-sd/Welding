@@ -17,18 +17,20 @@
     <div class="portfolio-grid" data-portfolio-grid>
       {% for item in site.PORTFOLIO_ITEMS %}
       <article class="portfolio-card reveal" data-category="{{ item.category }}">
-        <div class="portfolio-card__image">
-          <img src="{% content_image item %}" alt="{{ item.title }} — {{ item.location }} metal fabrication project" width="1600" height="1200" loading="lazy">
-          <span class="portfolio-card__badge">{{ item.category }}</span>
-        </div>
-        <div class="portfolio-card__body">
-          <h3 class="portfolio-card__title">{{ item.title }}</h3>
-          <p class="portfolio-card__meta">
-            <span>{{ item.location }}</span>
-            <span aria-hidden="true">·</span>
-            <span>{{ item.detail }}</span>
-          </p>
-        </div>
+        <a href="{% url 'portfolio_detail' item.slug %}" class="portfolio-card__link">
+          <div class="portfolio-card__image">
+            <img src="{% content_image item %}" alt="{{ item.title }} — {{ item.location }} metal fabrication project" width="1600" height="1200" loading="lazy">
+            <span class="portfolio-card__badge">{{ item.category }}</span>
+          </div>
+          <div class="portfolio-card__body">
+            <h3 class="portfolio-card__title">{{ item.title }}</h3>
+            <p class="portfolio-card__meta">
+              <span>{{ item.location }}</span>
+              <span aria-hidden="true">·</span>
+              <span>{{ item.detail }}</span>
+            </p>
+          </div>
+        </a>
       </article>
       {% endfor %}
     </div>
