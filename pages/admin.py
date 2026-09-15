@@ -100,9 +100,24 @@ class ServiceAdmin(ModelAdmin):
 class PortfolioImageInline(TabularInline):
     model = PortfolioImage
     extra = 3
-    fields = ('image', 'alt_text', 'sort_order')
+    fields = ('get_preview', 'image', 'alt_text', 'sort_order')
+    readonly_fields = ('get_preview',)
     ordering = ('sort_order', 'pk')
-    tab = True
+    tab = False
+    verbose_name = 'фото галереї'
+    verbose_name_plural = 'Галерея проєкту (додаткові фото)'
+
+    @admin.display(description='Превʼю')
+    def get_preview(self, obj):
+        from django.utils.html import format_html
+
+        if obj and obj.pk and obj.image:
+            return format_html(
+                '<img src="{}" alt="" style="max-height:72px;max-width:96px;'
+                'border-radius:6px;border:1px solid #e5e7eb;object-fit:cover;" />',
+                obj.image.url,
+            )
+        return '—'
 
 
 @admin.register(PortfolioItem)
@@ -125,10 +140,11 @@ class PortfolioItemAdmin(AdminImageWebpMixin, ImagePreviewMixin, ModelAdmin):
             'fields': ('title', 'slug', 'category', 'location', 'detail', 'body'),
         }),
         ('Зображення', {
-            'fields': ('static_image', 'image', 'get_image_preview'),
+            'fields': ('get_image_preview', 'static_image', 'image'),
             'description': (
-                'Image — обкладинка картки та головне фото сторінки проєкту. '
-                'Додаткові фото додайте в блоці «Фото портфоліо» нижче.'
+                'Обкладинка картки та головне фото сторінки. '
+                'Превʼю показує media-файл або static-резерв. '
+                'Нижче — галерея: додайте кілька фото одразу.'
             ),
         }),
         ('Публікація', {
@@ -167,7 +183,7 @@ class BlogPostAdmin(AdminImageWebpMixin, ImagePreviewMixin, ModelAdmin):
             'fields': ('title', 'slug', 'category', 'excerpt', 'body'),
         }),
         ('Зображення', {
-            'fields': ('static_image', 'image', 'get_image_preview'),
+            'fields': ('get_image_preview', 'static_image', 'image'),
         }),
         ('Публікація', {
             'fields': ('published_at', 'is_featured', 'is_published'),

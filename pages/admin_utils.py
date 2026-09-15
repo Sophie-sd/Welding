@@ -34,15 +34,32 @@ class ImagePreviewMixin:
     image_field = 'image'
 
     def get_image_preview(self, obj):
+        from django.templatetags.static import static
         from django.utils.html import format_html
 
+        if not obj or not getattr(obj, 'pk', None):
+            return '—'
+
         image = getattr(obj, self.image_field, None)
-        if obj and image:
-            return format_html(
-                '<img src="{}" style="max-height:120px;border-radius:6px;" />',
-                image.url,
-            )
-        return '—'
+        if image and getattr(image, 'name', None):
+            url = image.url
+            source = 'media'
+        else:
+            filename = getattr(obj, 'static_image', '') or getattr(obj, 'image_filename', '')
+            if not filename:
+                return '—'
+            url = static(f'images/{filename}')
+            source = 'static'
+
+        return format_html(
+            '<div style="display:flex;flex-direction:column;gap:6px;">'
+            '<img src="{}" alt="" style="max-height:160px;max-width:280px;'
+            'border-radius:8px;border:1px solid #e5e7eb;object-fit:cover;" />'
+            '<span style="font-size:12px;opacity:0.7;">{}</span>'
+            '</div>',
+            url,
+            'Завантажене media-фото' if source == 'media' else f'Static: {filename}',
+        )
 
     get_image_preview.short_description = 'Превʼю'
 
