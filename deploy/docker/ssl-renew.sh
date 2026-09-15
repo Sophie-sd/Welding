@@ -5,7 +5,7 @@ set -euo pipefail
 
 APP_DIR="${APP_DIR:-/var/www/weldingproject}"
 WEBROOT="${WEBROOT:-/var/www/certbot}"
-DOMAINS=(-d khodakmetal.com -d www.khodakmetal.com)
+EMAIL="${CERTBOT_EMAIL:-khodakmetalsolution@gmail.com}"
 FORCE=false
 
 for arg in "$@"; do
@@ -26,20 +26,6 @@ fi
 mkdir -p "${WEBROOT}/.well-known/acme-challenge"
 chmod -R 755 "${WEBROOT}"
 
-cd "${APP_DIR}"
-
-if [[ -f .env ]]; then
-    set -a
-    # shellcheck disable=SC1091
-    source .env
-    set +a
-fi
-
-COMPOSE=(docker compose -f docker-compose.yml)
-if [[ "${USE_HTTPS:-false}" == "true" ]]; then
-    COMPOSE+=(-f docker-compose.prod.yml)
-fi
-
 install_hooks() {
     mkdir -p /etc/letsencrypt/renewal-hooks/deploy
     cat > /etc/letsencrypt/renewal-hooks/deploy/reload-welding-nginx.sh <<'EOF'
@@ -57,62 +43,53 @@ EOF
     chmod +x /etc/letsencrypt/renewal-hooks/deploy/reload-welding-nginx.sh
 }
 
-ensure_webroot_lineage() {
-    local conf="/etc/letsencrypt/renewal/khodakmetal.com.conf"
-    if [[ ! -f "${conf}" ]]; then
-        return 0
-    fi
-    # Prefer webroot over standalone so renewals work with Docker on :80.
-    if grep -q 'authenticator = standalone' "${conf}"; then
-        sed -i \
-            -e 's/^authenticator = standalone$/authenticator = webroot/' \
-            -e '/^\[\[webroot_map\]\]/,/^\[/{/^\[\[webroot_map\]\]/d;}' \
-            "${conf}" || true
-    fi
-    if ! grep -q '^webroot_path' "${conf}"; then
-        # Insert under [renewalparams]
-        awk -v root="${WEBROOT}" '
-            BEGIN { inserted=0 }
-            /^\[renewalparams\]/ { print; print "authenticator = webroot"; print "webroot_path = " root; inserted=1; next }
-            /^authenticator = / { if (inserted) next }
-            /^webroot_path = / { next }
-            { print }
-        ' "${conf}" > "${conf}.tmp" && mv "${conf}.tmp" "${conf}"
-    else
-        sed -i "s|^webroot_path = .*|webroot_path = ${WEBROOT}|" "${conf}"
-    fi
-    if ! grep -q '^\[\[webroot_map\]\]' "${conf}"; then
-        cat >> "${conf}" <<EOF
-
-[[webroot_map]]
-khodakmetal.com = ${WEBROOT}
-www.khodakmetal.com = ${WEBROOT}
-EOF
-    fi
-}
-
 install_hooks
 systemctl enable --now certbot.timer >/dev/null 2>&1 || true
 
+CERTBOT_ARGS=(
+    certonly
+    --webroot
+    -w "${WEBROOT}"
+    -d khodakmetal.com
+    -d www.khodakmetal.com
+    --agree-tos
+    --non-interactive
+    --email "${EMAIL}"
+    --deploy-hook /etc/letsencrypt/renewal-hooks/deploy/reload-welding-nginx.sh
+)
+
 if [[ ! -d /etc/letsencrypt/live/khodakmetal.com ]]; then
     echo "==> Issuing new certificate (webroot)"
-    certbot certonly --webroot -w "${WEBROOT}" "${DOMAINS[@]}" \
-        --agree-tos --non-interactive --keep-until-expiring \
-        --email "${CERTBOT_EMAIL:-khodakmetalsolution@gmail.com}" \
-        --deploy-hook /etc/letsencrypt/renewal-hooks/deploy/reload-welding-nginx.sh
+    certbot "${CERTBOT_ARGS[@]}"
+elif [[ "${FORCE}" == "true" ]]; then
+    echo "==> Force renewing certificate (webroot)"
+    certbot "${CERTBOT_ARGS[@]}" --force-renewal
 else
-    ensure_webroot_lineage
-    if [[ "${FORCE}" == "true" ]]; then
-        echo "==> Force renewing certificate (webroot)"
-        certbot certonly --webroot -w "${WEBROOT}" "${DOMAINS[@]}" \
-            --force-renewal --non-interactive \
-            --deploy-hook /etc/letsencrypt/renewal-hooks/deploy/reload-welding-nginx.sh
+    echo "==> Renewing if due (webroot)"
+    # Re-run certonly without force so lineage switches to webroot authenticator.
+    certbot "${CERTBOT_ARGS[@]}" --keep-until-expiring
+fi
+
+# Ensure timer renewals use webroot (rewrite if still standalone).
+RENEW_CONF="/etc/letsencrypt/renewal/khodakmetal.com.conf"
+if [[ -f "${RENEW_CONF}" ]]; then
+    sed -i 's/^authenticator = standalone$/authenticator = webroot/' "${RENEW_CONF}"
+    if grep -q '^webroot_path' "${RENEW_CONF}"; then
+        sed -i "s|^webroot_path = .*|webroot_path = ${WEBROOT}|" "${RENEW_CONF}"
     else
-        echo "==> Renewing if due (webroot)"
-        certbot renew --webroot -w "${WEBROOT}" --non-interactive
+        awk -v root="${WEBROOT}" '
+            /^\[renewalparams\]/ { print; print "webroot_path = " root; next }
+            { print }
+        ' "${RENEW_CONF}" > "${RENEW_CONF}.tmp" && mv "${RENEW_CONF}.tmp" "${RENEW_CONF}"
+    fi
+    if ! grep -q '^\[\[webroot_map\]\]' "${RENEW_CONF}"; then
+        printf '\n[[webroot_map]]\nkhodakmetal.com = %s\nwww.khodakmetal.com = %s\n' \
+            "${WEBROOT}" "${WEBROOT}" >> "${RENEW_CONF}"
     fi
 fi
 
-ensure_webroot_lineage
+echo "==> Dry-run renewal"
+certbot renew --dry-run
+
 certbot certificates
-echo "SSL renew path OK (webroot + certbot.timer + nginx reload hook)."
+echo "SSL OK: webroot + certbot.timer + nginx reload hook."
