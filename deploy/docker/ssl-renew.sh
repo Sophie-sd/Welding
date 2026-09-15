@@ -37,8 +37,8 @@ COMPOSE=(docker compose -f docker-compose.yml)
 if grep -q '^USE_HTTPS=true' .env 2>/dev/null; then
     COMPOSE+=(-f docker-compose.prod.yml)
 fi
-"${COMPOSE[@]}" exec -T nginx nginx -s reload \
-    || "${COMPOSE[@]}" restart nginx
+"${COMPOSE[@]}" exec -T nginx nginx -s reload >/dev/null 2>&1 \
+    || "${COMPOSE[@]}" restart nginx >/dev/null 2>&1
 EOF
     chmod +x /etc/letsencrypt/renewal-hooks/deploy/reload-welding-nginx.sh
 }
